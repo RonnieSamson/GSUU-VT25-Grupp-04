@@ -9,22 +9,32 @@ public class DiverController : MonoBehaviour
     private Vector2 moveDirection;
     private SpriteRenderer SpriteRenderer; // Reference to the SpriteRenderer componentS
 
+    private bool isFacingRight = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer.flipX = false;
+        isFacingRight = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
-        moveDirection = new Vector2(moveX, moveY).normalized; // Normalize to prevent faster diagonal movement
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        moveDirection = new Vector2(moveX, moveY).normalized;
 
-        if (moveX != 0)
+        if (moveX > 0 && !isFacingRight)
         {
-            SpriteRenderer.flipX = moveX < 0; // Flip the sprite based on movement direction
+            SpriteRenderer.flipX = true;
+            isFacingRight = true;
+        }
+        else if (moveX < 0 && isFacingRight)
+        {
+            SpriteRenderer.flipX = false;
+            isFacingRight = false;
         }
     }
     void FixedUpdate()
