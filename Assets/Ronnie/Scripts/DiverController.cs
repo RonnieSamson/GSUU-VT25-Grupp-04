@@ -1,44 +1,40 @@
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class DiverController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private float moveSpeed = 5f;
     private Rigidbody2D rb;
     private Vector2 moveDirection;
-    private SpriteRenderer SpriteRenderer; // Reference to the SpriteRenderer componentS
-
-    private bool isFacingRight = false;
+    private SpriteRenderer SpriteRenderer;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
-        SpriteRenderer.flipX = false;
-        isFacingRight = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Använd GetAxisRaw för att få tydliga riktningar (-1, 0, 1)
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
+
         moveDirection = new Vector2(moveX, moveY).normalized;
 
-        if (moveX > 0 && !isFacingRight)
+        // Flip sprite BARA när spelaren trycker
+        if (moveX > 0)
         {
-            SpriteRenderer.flipX = true;
-            isFacingRight = true;
+            SpriteRenderer.flipX = true;  // Tittar höger (flippad)
         }
-        else if (moveX < 0 && isFacingRight)
+        else if (moveX < 0)
         {
-            SpriteRenderer.flipX = false;
-            isFacingRight = false;
+            SpriteRenderer.flipX = false; // Tittar vänster (original)
         }
     }
+
     void FixedUpdate()
     {
-        rb.linearVelocity = moveDirection * moveSpeed; // Apply movement to the Rigidbody2D
+        rb.linearVelocity = moveDirection * moveSpeed;
     }
 }
+
