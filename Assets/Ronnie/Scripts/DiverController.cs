@@ -15,7 +15,7 @@ public class DiverController : MonoBehaviour
 
     void Update()
     {
-        // Använd GetAxisRaw för att få tydliga riktningar (-1, 0, 1)
+
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
 
