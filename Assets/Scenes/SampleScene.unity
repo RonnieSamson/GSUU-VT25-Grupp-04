@@ -16203,6 +16203,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1021394015674494844, guid: 92ae066596b9f2c43aa54a39135c9fb4, type: 3}
+      propertyPath: m_GravityScale
+      value: -0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 6532777433922281162, guid: 92ae066596b9f2c43aa54a39135c9fb4, type: 3}
       propertyPath: m_Name
       value: Diver1
