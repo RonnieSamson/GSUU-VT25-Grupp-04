@@ -37,4 +37,3 @@ public class DiverController : MonoBehaviour
         rb.linearVelocity = moveDirection * moveSpeed;
     }
 }
-
