@@ -103,86 +103,20 @@ TextureImporter:
       name: GrassPlattform_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 512
-        width: 512
-        height: 512
+        x: 48
+        y: 76
+        width: 927
+        height: 863
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 427b19af744a31910800000000000000
+      spriteID: d4af5748b3d771c428935f170f23560b
       internalID: 1806968504559187748
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GrassPlattform_1
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bb851537b441a4640912d83cd2424f3a
-      internalID: -542783420
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GrassPlattform_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8f3c8902564d9a54282a1a65bded05f6
-      internalID: 1413111889
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GrassPlattform_3
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b85215d0ea026874fad90ad9ef6d4721
-      internalID: 1283249809
       vertices: []
       indices: 
       edges: []
@@ -202,9 +136,6 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       GrassPlattform_0: 1806968504559187748
-      GrassPlattform_1: -542783420
-      GrassPlattform_2: 1413111889
-      GrassPlattform_3: 1283249809
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
