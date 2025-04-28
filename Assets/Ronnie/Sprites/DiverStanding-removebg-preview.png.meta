@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DiverStanding-removebg-preview_0: 1899308148216570692
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
