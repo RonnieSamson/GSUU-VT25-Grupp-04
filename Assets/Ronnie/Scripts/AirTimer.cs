@@ -1,50 +1,67 @@
 using UnityEngine;
 using UnityEngine.UI;
-// OBS: EJ nödvändig – TA BORT om du inte använder UI Toolkit!
-using TMPro; // Endast om du använder TextMeshPro, annars ta bort
+using TMPro;
 
 public class AirTimer : MonoBehaviour
 {
-  [SerializeField] private float startTime = 90f; // 1 min 30 sek
+  [SerializeField] private float startTime = 10f; // Endast 10 sekunder luft
   private float currentTime;
 
-  [SerializeField] private Text airTimerText; // Din UI Text-komponent
-  [SerializeField] private Image airTimerBar; // Din gröna mätare (Image med Fill)
+  [SerializeField] private Text airTimerText;
+  [SerializeField] private Image airTimerBar;
+
   [SerializeField] private Color normalColor = Color.green;
   [SerializeField] private Color warningColor = Color.red;
 
-  private void Start()
+  [Header("Död och Game Over")]
+  [SerializeField] private Sprite deadSprite;
+  [SerializeField] private SpriteRenderer diverRenderer;
+  [SerializeField] private GameObject gameOverText;
+
+  private bool hasDied = false;
+
+  void Start()
   {
     currentTime = startTime;
+    gameOverText.SetActive(false); // Dölj texten i början
   }
 
-  private void Update()
+  void Update()
   {
+    if (hasDied) return;
+
     if (currentTime > 0f)
     {
       currentTime -= Time.deltaTime;
       if (currentTime < 0f) currentTime = 0f;
-    }
 
-    // Räkna ut minuter och sekunder
-    int minutes = Mathf.FloorToInt(currentTime / 60f);
-    int seconds = Mathf.FloorToInt(currentTime % 60f);
-    airTimerText.text = $"{minutes:0}:{seconds:00}";
+      // Visa minuter och sekunder
+      int minutes = Mathf.FloorToInt(currentTime / 60f);
+      int seconds = Mathf.FloorToInt(currentTime % 60f);
+      airTimerText.text = $"{minutes:00}:{seconds:00}";
 
-    // Fyll mätaren
-    float fillAmount = currentTime / startTime;
-    airTimerBar.fillAmount = fillAmount;
+      // Uppdatera mätare
+      float fillAmount = currentTime / startTime;
+      airTimerBar.fillAmount = fillAmount;
 
-    // Ändra färg
-    if (currentTime <= 15f)
-    {
-      airTimerText.color = warningColor;
-      airTimerBar.color = warningColor;
+      // Ändra färg om tiden är under 5 sekunder
+      if (currentTime <= 5f)
+      {
+        airTimerText.color = warningColor;
+        airTimerBar.color = warningColor;
+      }
+      else
+      {
+        airTimerText.color = normalColor;
+        airTimerBar.color = normalColor;
+      }
     }
     else
     {
-      airTimerText.color = normalColor;
-      airTimerBar.color = normalColor;
+      // När luften är slut
+      hasDied = true;
+      diverRenderer.sprite = deadSprite;
+      gameOverText.SetActive(true);
     }
   }
 }
