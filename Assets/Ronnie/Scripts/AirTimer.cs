@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements; // OBS: EJ nödvändig – TA BORT om du inte använder UI Toolkit!
+// OBS: EJ nödvändig – TA BORT om du inte använder UI Toolkit!
 using TMPro; // Endast om du använder TextMeshPro, annars ta bort
 
 public class AirTimer : MonoBehaviour
