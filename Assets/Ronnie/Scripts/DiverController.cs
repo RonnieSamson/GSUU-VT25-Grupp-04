@@ -5,22 +5,27 @@ public class DiverController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Sprite neutralSprite;
     [SerializeField] private Sprite swimmingSprite;
+
     private Rigidbody2D rb;
     private Vector2 moveDirection;
     private SpriteRenderer SpriteRenderer;
 
+    public bool isDead = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
-
-
-        SpriteRenderer.sprite = neutralSprite; // Sätter den neutrala sprite som standard
+        SpriteRenderer.sprite = neutralSprite;
     }
 
     void Update()
     {
+        if (isDead)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
 
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
@@ -28,21 +33,15 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
-            SpriteRenderer.sprite = swimmingSprite;  // Simmande sprite visas
+            SpriteRenderer.sprite = swimmingSprite;
 
-            // Flip baserat på horisontell riktning
             if (moveX > 0)
-            {
-                SpriteRenderer.flipX = true;  // Tittar höger
-            }
+                SpriteRenderer.flipX = true;
             else if (moveX < 0)
-            {
-                SpriteRenderer.flipX = false; // Tittar vänster
-            }
+                SpriteRenderer.flipX = false;
         }
         else
         {
-            // Om INGEN input – byt tillbaka till neutral sprite
             moveDirection = Vector2.zero;
             SpriteRenderer.sprite = neutralSprite;
         }
@@ -51,5 +50,11 @@ public class DiverController : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = moveDirection * moveSpeed;
+    }
+
+    public void Die()
+    {
+        isDead = true;
+        moveDirection = Vector2.zero;
     }
 }
