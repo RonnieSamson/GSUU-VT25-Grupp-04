@@ -62,6 +62,13 @@ public class AirTimer : MonoBehaviour
       hasDied = true;
       diverRenderer.sprite = deadSprite;
       gameOverText.SetActive(true);
+
+      // Inaktivera Animator om den finns
+      Animator anim = diverRenderer.GetComponent<Animator>();
+      if (anim != null)
+      {
+        anim.enabled = false;
+      }
     }
   }
 }
