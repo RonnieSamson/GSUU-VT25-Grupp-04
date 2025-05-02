@@ -4,7 +4,7 @@ using TMPro;
 
 public class AirTimer : MonoBehaviour
 {
-  [SerializeField] private float startTime = 10f; // Endast 10 sekunder luft
+  [SerializeField] private float startTime = 10f;
   private float currentTime;
 
   [SerializeField] private Text airTimerText;
@@ -23,7 +23,7 @@ public class AirTimer : MonoBehaviour
   void Start()
   {
     currentTime = startTime;
-    gameOverText.SetActive(false); // Dölj texten i början
+    gameOverText.SetActive(false);
   }
 
   void Update()
@@ -35,16 +35,13 @@ public class AirTimer : MonoBehaviour
       currentTime -= Time.deltaTime;
       if (currentTime < 0f) currentTime = 0f;
 
-      // Visa minuter och sekunder
       int minutes = Mathf.FloorToInt(currentTime / 60f);
       int seconds = Mathf.FloorToInt(currentTime % 60f);
       airTimerText.text = $"{minutes:00}:{seconds:00}";
 
-      // Uppdatera mätare
       float fillAmount = currentTime / startTime;
       airTimerBar.fillAmount = fillAmount;
 
-      // Ändra färg om tiden är under 5 sekunder
       if (currentTime <= 5f)
       {
         airTimerText.color = warningColor;
@@ -58,16 +55,15 @@ public class AirTimer : MonoBehaviour
     }
     else
     {
-      // När luften är slut
       hasDied = true;
       diverRenderer.sprite = deadSprite;
       gameOverText.SetActive(true);
 
-      // Inaktivera Animator om den finns
-      Animator anim = diverRenderer.GetComponent<Animator>();
-      if (anim != null)
+      // Meddela DiverController att dykaren är död
+      DiverController diver = FindObjectOfType<DiverController>();
+      if (diver != null)
       {
-        anim.enabled = false;
+        diver.Die();
       }
     }
   }
