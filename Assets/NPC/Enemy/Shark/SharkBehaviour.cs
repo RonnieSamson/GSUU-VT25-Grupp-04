@@ -1,30 +1,44 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SharkBehaviour : MonoBehaviour
 {
     public GameObject patrol1; //Patrol point 1
     public GameObject patrol2; //Patrol point 2
-    //public Transform player; When player is implemented, uncomment and reference in Start() as well
-
+    public Transform player;
+    public AirTimer airTimer;
     private Rigidbody2D rb;
     private Transform currentPoint;
 
-    public float speed = 7.0f;
-    public float stoppingDistance = 0.2f; // How close we need to get to a patrol point
 
+    [Header("Attributes for movement and life")]
+    public float speed = 3.7f; // slightly slower than the player
+    public float stoppingDistance = 0.2f; // How close we need to get to a patrol point before turning 
     private float life = 10f; // hp of the shark
+
+
+    [Header("Attributes for chasing & attacking")]
     private float damage = 1f; //damage per bite
-    public float attackRange = 5.0f; // Range to start chasing the player
+    public float attackRange = 1.0f; // Range to start attacking the player
+    public float chaseRange = 5.0f; // Range to start chasing the player
     private bool isChasingPlayer = false;
 
-    // Attributes for turning "animation"
+    private float biteCooldown = 3f;// time before shark can bite again
+    private float chaseResetTime = 2f;// time after bite before returning to patrol
+    private float lastBiteTime = -999f;
+    private bool coolingDown = false;
+
+    public ParticleSystem bubbles;
+    public AudioSource bubbleSfx;
+
+    [Header("Attributes for turning \"animation\"")] 
     private bool facingRight = true;
     private bool isTurning = false;
-    private float turnSpeed = 225f; // degrees per second
+    private float turnSpeed = 225f; //in degrees per second
     private Quaternion targetRotation;
     private Vector3 originalScale;
     private Vector3 biggerScale;
-    private float scaleLerpSpeed = 4f; // how fast it shrinks and grows
+    private float scaleLerpSpeed = 4f; // how fast it shrinks and grows via linear interpolation
     private bool shrinking = true;
     private float originalSpeed;
     private float slowedSpeed;
@@ -32,7 +46,6 @@ public class SharkBehaviour : MonoBehaviour
 
     void Start()
     {
-        //player = GetComponent<GameObject>();
         rb = GetComponent<Rigidbody2D>();
         currentPoint = patrol1.transform;
         originalScale = transform.localScale;
@@ -43,19 +56,7 @@ public class SharkBehaviour : MonoBehaviour
 
     void Update()
     {
-        //float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        //// Check if we should attack player
-        //if (distanceToPlayer < attackRange)
-        //{
-        //    isChasingPlayer = true;
-        //}
-        //else
-        //{
-        //    isChasingPlayer = false;
-        //}
-
-        // Smoothly adjust speed back to normal after turning
+        DistanceToPlayerCheck();
         
     }
 
@@ -64,12 +65,58 @@ public class SharkBehaviour : MonoBehaviour
         Patrol();
     }
 
+    private void Attack()
+    {
+        if (Time.time - lastBiteTime >= biteCooldown)
+        {
+            airTimer.currentTime -= damage; // Deal damage to diver
+            bubbles.Play();
+            bubbleSfx.Play();
+            lastBiteTime = Time.time;
+
+           
+            isChasingPlayer = false;//stop chasing for a bit
+            coolingDown = true;
+        }
+    }
+
+    private void DistanceToPlayerCheck()
+    {
+        if (!coolingDown)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+
+            // Check if we should attack player
+            if (distanceToPlayer < attackRange)
+            {
+                Attack();
+            }
+
+            else if (distanceToPlayer < chaseRange)
+            {
+                isChasingPlayer = true;
+            }
+
+            else
+            {
+                isChasingPlayer = false;
+            }
+        }
+
+        if (coolingDown && Time.time - lastBiteTime > chaseResetTime)
+        {
+            isChasingPlayer = false;
+            coolingDown = false;
+        }
+    }
+
+
     private void Patrol()
     {
         if (isChasingPlayer) // Needs the player gameobject to work, not tested at all just a placholder
         {
-            //Vector2 direction = (player.position - transform.position).normalized;
-            //rb.linearVelocity = direction * speed;
+            Vector2 direction = (player.position - transform.position).normalized;
+            rb.linearVelocity = direction * speed;
         }
 
         else

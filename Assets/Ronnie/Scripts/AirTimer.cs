@@ -5,7 +5,7 @@ using TMPro;
 public class AirTimer : MonoBehaviour
 {
   [SerializeField] private float startTime = 10f;
-  private float currentTime;
+  public float currentTime;
 
   [SerializeField] private Text airTimerText;
   [SerializeField] private Image airTimerBar;
