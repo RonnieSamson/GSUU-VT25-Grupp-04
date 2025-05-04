@@ -1,12 +1,12 @@
 using UnityEngine;
-using TMPro; // Lägg till detta!
+using TMPro; 
 
 public class CashManager : MonoBehaviour
 {
     public static CashManager Instance;
 
     public int cash = 0;
-    public TMP_Text cashText; // Ändrat från Text till TMP_Text
+    public TMP_Text cashText; 
 
     void Awake()
     {

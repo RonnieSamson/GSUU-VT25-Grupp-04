@@ -6,7 +6,7 @@ public class Collectible : MonoBehaviour
     private bool playerInRange = false;
     private float holdTime = 0f;
     public float requiredHoldTime = 2f;
-    public int cashValue = 10;
+    public int cashValue = 10; // Inspector kan sättas automatiskt
     public Slider holdSlider;
 
     void Start()
@@ -42,7 +42,7 @@ public class Collectible : MonoBehaviour
 
     void Collect()
     {
-    CashManager.Instance.AddCash(cashValue); // Lägg till pengar
+    CashManager.Instance.AddCash(cashValue); 
 
     Destroy(gameObject);
 
