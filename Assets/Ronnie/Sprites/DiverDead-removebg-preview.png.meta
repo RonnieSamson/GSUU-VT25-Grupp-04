@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DiverDead-removebg-preview_0: -6937425790763853190
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
