@@ -32,6 +32,7 @@ public class SharkBehaviour : MonoBehaviour
 
     void Start()
     {
+        //player = GetComponent<GameObject>();
         rb = GetComponent<Rigidbody2D>();
         currentPoint = patrol1.transform;
         originalScale = transform.localScale;
