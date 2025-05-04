@@ -6,7 +6,7 @@ public class Collectible : MonoBehaviour
     private bool playerInRange = false;
     private float holdTime = 0f;
     public float requiredHoldTime = 2f;
-
+    public int cashValue = 10;
     public Slider holdSlider;
 
     void Start()
@@ -42,12 +42,16 @@ public class Collectible : MonoBehaviour
 
     void Collect()
     {
-        Destroy(gameObject);
-        if (holdSlider != null)
-        {
-            holdSlider.gameObject.SetActive(false); 
-        }
+    CashManager.Instance.AddCash(cashValue); // Lägg till pengar
+
+    Destroy(gameObject);
+
+    if (holdSlider != null)
+    {
+        holdSlider.gameObject.SetActive(false); 
     }
+}
+    
 
     void OnTriggerEnter2D(Collider2D other)
     {
