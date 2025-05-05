@@ -67,4 +67,8 @@ public class AirTimer : MonoBehaviour
       }
     }
   }
+  public void AddAir(float extraTime)
+  {
+    currentTime = Mathf.Min(currentTime + extraTime, startTime);
+  }
 }

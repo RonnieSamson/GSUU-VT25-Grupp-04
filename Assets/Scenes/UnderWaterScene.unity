@@ -22919,11 +22919,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fad41049752934a9284af9f1691d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startTime: 10
+  startTime: 90
   currentTime: 0
   airTimerText: {fileID: 1687451229}
   airTimerBar: {fileID: 1039190154}
-  normalColor: {r: 0, g: 1, b: 0, a: 1}
+  normalColor: {r: 0.03529412, g: 0.5900365, b: 0.6320754, a: 1}
   warningColor: {r: 1, g: 0, b: 0, a: 1}
   deadSprite: {fileID: -6937425790763853190, guid: 53856fa385fe06244bf5dfd8f0e2bf1f, type: 3}
   diverRenderer: {fileID: 2079634319}
