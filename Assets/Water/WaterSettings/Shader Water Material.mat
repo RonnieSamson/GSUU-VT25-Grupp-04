@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Water Material
-  m_Shader: {fileID: -6465566751694194690, guid: 83896d812b732ca4e9bb1c3d95978c45, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b5db9e1bb2ccba3419cec2a2f86cb98f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -135,6 +135,9 @@ Material:
     - _CausticScale: 5
     - _CausticStrength: 1
     - _Cutoff: 0.5
+    - _Density: 3
+    - _Density_2: 3
+    - _Density_3: 1
     - _DetailNormalMapScale: 1
     - _DistortionOffsetSpeed: 1
     - _DistortionScale: 30
@@ -145,6 +148,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LineLength: 0.99
+    - _Linewidth: 0.99885
     - _METALNESS: 0
     - _Metallic: 0
     - _Mode: 0
@@ -156,7 +160,9 @@ Material:
     - _SPECULAR_ROUGHNESS: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 2
     - _SrcBlend: 1
+    - _Tiling: 0
     - _UVSec: 0
     - _WaveCount: 0.75
     - _WaveFlowDirection: 1
@@ -177,6 +183,7 @@ Material:
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _Line: {r: 0.6630473, g: 0.8542319, b: 0.9433962, a: 0}
     - _LineColor: {r: 0.11449797, g: 0.5412608, b: 0.7830188, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 0}
