@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - water
   layers:
   - Default
   - TransparentFX
@@ -38,11 +39,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
+  - name: Background
+    uniqueID: 1907152117
     locked: 0
   - name: Water
     uniqueID: 293260221
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Platforms & Walls
+    uniqueID: 2016378235
+    locked: 0
+  - name: SortingTexture
+    uniqueID: 3405308941
     locked: 0
   m_RenderingLayers:
   - Default
