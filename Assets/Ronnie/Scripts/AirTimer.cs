@@ -60,7 +60,7 @@ public class AirTimer : MonoBehaviour
       gameOverText.SetActive(true);
 
       // Meddela DiverController att dykaren är död
-      DiverController diver = FindObjectOfType<DiverController>();
+      DiverController diver = Object.FindFirstObjectByType<DiverController>();
       if (diver != null)
       {
         diver.Die();

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class DiverController : MonoBehaviour
@@ -5,6 +6,11 @@ public class DiverController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Sprite neutralSprite;
     [SerializeField] private Sprite swimmingSprite;
+    [SerializeField] private Sprite boostNeutralSprite;
+    [SerializeField] private Sprite boostSwimmingSprite;
+
+    private bool isBoosted = false;
+    private float boostTimeRemaining = 0f;
 
     private Rigidbody2D rb;
     private Vector2 moveDirection;
