@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DiverBoostBottle-removebg-preview_0: -6543943631432443045
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
