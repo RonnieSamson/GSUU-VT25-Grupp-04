@@ -69,7 +69,7 @@ public class ShopManager : MonoBehaviour
 
     public void OpenShop()
     {
-       Time.timeScale = 0f; // Pause the game if you want
+       //Time.timeScale = 0f; // Pause the game if you want
         
         btnAirTube.SetActive(true);
         btnFillAir.SetActive(true);
@@ -79,11 +79,20 @@ public class ShopManager : MonoBehaviour
 
     public void CloseShop()
     {
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
         btnAirTube.SetActive(false);
         btnFillAir.SetActive(false);
         btnFins.SetActive(false);
         shopMenuIsOpen = false;
+
+    }
+
+    public void BuyAirtube()
+    {
+        Debug.Log("Button Airtube");
+        UnityEngine.Debug.Break(); // pauses the game if this is reached
+
+        //shopManager.BuyUpgrade(5, "Airtube");
     }
 
     public void BuyUpgrade(int cost, string upgradeType)
@@ -94,13 +103,18 @@ public class ShopManager : MonoBehaviour
 
             switch (upgradeType)
             {
-                //case "Speed":
-                //    playerStats.moveSpeed += 1f;
-                //    break;
-                //case "Oxygen":
-                //    playerStats.maxAir += 10f;
-                //    break;
-                //    // Add more cases as needed
+                case "Airtube":
+                    Debug.Log("Airtube bought");
+                    break;
+
+                case "Fins":
+                    Debug.Log("Fins bought");
+                    //Lägg till uppgradering här i. T.ex Player.swimSpeed = 15;
+                    break;
+
+                case "FillAir":
+                    Debug.Log("FillAir bought");
+                    break;
             }
         }
     }
