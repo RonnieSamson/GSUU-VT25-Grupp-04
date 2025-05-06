@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class ShopButton : MonoBehaviour
 { 
+    public ShopManager shopManager;
 
     public void Start()
     {
@@ -16,22 +17,16 @@ public class ShopButton : MonoBehaviour
 
     public void BuyAirtube()
     {
-        Debug.Log("Button Airtube");
-
-        //shopManager.BuyUpgrade(5, "Airtube");
+        shopManager.BuyUpgrade(5, "Airtube");
     }
 
     public void BuyFins()
     {
-        Debug.Log("Button Fins");
-
-        //shopManager.BuyUpgrade(5, "Fins");
+        shopManager.BuyUpgrade(5, "Fins");
     }
 
     public void BuyFillAir()
     {
-        Debug.Log("Button Fillair");
-
-        //shopManager.BuyUpgrade(2, "FillAir");
+        shopManager.BuyUpgrade(2, "FillAir");
     }
 }

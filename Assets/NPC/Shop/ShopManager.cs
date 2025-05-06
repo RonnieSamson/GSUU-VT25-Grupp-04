@@ -87,33 +87,27 @@ public class ShopManager : MonoBehaviour
 
     }
 
-    public void BuyAirtube()
-    {
-        Debug.Log("Button Airtube");
-        UnityEngine.Debug.Break(); // pauses the game if this is reached
-
-        //shopManager.BuyUpgrade(5, "Airtube");
-    }
-
     public void BuyUpgrade(int cost, string upgradeType)
     {
         if (money >= cost)
         {
             money -= cost;
 
-            switch (upgradeType)
+            switch (upgradeType) // Lägg till uppgradering här i. T.ex Player.swimSpeed = 15;
             {
                 case "Airtube":
                     Debug.Log("Airtube bought");
+
                     break;
 
                 case "Fins":
                     Debug.Log("Fins bought");
-                    //Lägg till uppgradering här i. T.ex Player.swimSpeed = 15;
+                    
                     break;
 
                 case "FillAir":
                     Debug.Log("FillAir bought");
+
                     break;
             }
         }
