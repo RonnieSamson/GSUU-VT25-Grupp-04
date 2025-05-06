@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Background waterworld 2_0: -4996220470961913460
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
