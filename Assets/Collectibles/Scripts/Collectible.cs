@@ -5,11 +5,14 @@ public class Collectible : MonoBehaviour
 {
     private bool playerInRange = false;
     private float holdTime = 0f;
-    public float requiredHoldTime = 2f;
-    public int cashValue = 10; // Inspector kan sättas automatiskt
+    
+    [Header("Antal pengar per Collectible")]
+    [SerializeField] private int cashValue = 10;
 
-    public Slider holdSlider;
-    public GameObject instructionText;
+    [Header("Antal sekunder för att plocka upp objektet")]
+    [SerializeField] private float requiredHoldTime = 2f;
+    [SerializeField] private Slider holdSlider;
+    [SerializeField] private GameObject instructionText;
 
     void Start()
     {
