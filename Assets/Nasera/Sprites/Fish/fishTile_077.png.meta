@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: cfbe7c30227541b4db375faad1a82717
+guid: ed6283a6adfb88e46b1942e31887039d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4996220470961913460
-    second: Background waterworld 2_0
+      213: -4783916684467373257
+    second: fishTile_077_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Background waterworld 2_0
+      name: fishTile_077_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 2048
-        height: 2048
+        y: 13
+        width: 64
+        height: 38
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c81c7c8e3fbd9aab0800000000000000
-      internalID: -4996220470961913460
+      spriteID: 73bf14b2f1d1c9db0800000000000000
+      internalID: -4783916684467373257
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Background waterworld 2_0: -4996220470961913460
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
