@@ -27,20 +27,13 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
-            currentHealth = 0;
-            
-            if(deathManager != null) 
-            {
-                deathManager.TriggerDeath();
+             currentHealth = 0;
+             if (deathManager != null)
+             {
+                 deathManager.TriggerDeath(); 
             }
-            if(diver != null)
-            {
-                diver.Die();
-            }
-
         }
-
-        UpdateHearts();
+         UpdateHearts();
     }
 
     void UpdateHearts()

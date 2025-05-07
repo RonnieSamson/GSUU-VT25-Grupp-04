@@ -9,10 +9,12 @@ public class DeathManager : MonoBehaviour
     [SerializeField] private GameObject gameOverText;
 
     private bool hasDied = false;
+    private DiverController diver;
 
     void Start()
     {
         gameOverText.SetActive(false); 
+        diver = FindObjectOfType<DiverController>();
     }
 
     public void TriggerDeath()
@@ -22,7 +24,10 @@ public class DeathManager : MonoBehaviour
 
         diverRenderer.sprite = deadSprite;
         gameOverText.SetActive(true);
-
+        if (diver != null)
+        {
+            diver.Die();
+        }
         Time.timeScale= 0;
     }
 }

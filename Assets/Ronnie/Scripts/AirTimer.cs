@@ -13,17 +13,13 @@ public class AirTimer : MonoBehaviour
   [SerializeField] private Color normalColor = Color.green;
   [SerializeField] private Color warningColor = Color.red;
 
-  [Header("Död och Game Over")]
-  [SerializeField] private Sprite deadSprite;
-  [SerializeField] private SpriteRenderer diverRenderer;
-  [SerializeField] private GameObject gameOverText;
-
+  private DeathManager deathManager; //Använder nu DeathManager
   private bool hasDied = false;
 
   void Start()
   {
     currentTime = startTime;
-    gameOverText.SetActive(false);
+    deathManager = FindAnyObjectByType<DeathManager>();
   }
 
   void Update()
@@ -55,16 +51,13 @@ public class AirTimer : MonoBehaviour
     }
     else
     {
-      hasDied = true;
-      diverRenderer.sprite = deadSprite;
-      gameOverText.SetActive(true);
-
-      // Meddela DiverController att dykaren är död
-      DiverController diver = FindObjectOfType<DiverController>();
-      if (diver != null)
-      {
-        diver.Die();
-      }
+    if (deathManager != null)
+    {
+        deathManager.TriggerDeath();
     }
+
+    
+}
+
   }
 }
