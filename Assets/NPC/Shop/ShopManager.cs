@@ -8,7 +8,7 @@ public class ShopManager : MonoBehaviour
     public GameObject btnAirTube;
     public GameObject btnFillAir;
     public GameObject btnFins;
-    // public playerStats playerstats;
+    // public playerStats playerstats; något sätt att komma åt spelarens attribut
     public float money;
     public ShopTrigger shopTrigger;
     public bool shopMenuIsOpen = false;
@@ -69,8 +69,9 @@ public class ShopManager : MonoBehaviour
 
     public void OpenShop()
     {
-       //Time.timeScale = 0f; // Pause the game if you want
+       Time.timeScale = 0f; // Pause the game
         
+
         btnAirTube.SetActive(true);
         btnFillAir.SetActive(true);
         btnFins.SetActive(true);
@@ -79,7 +80,7 @@ public class ShopManager : MonoBehaviour
 
     public void CloseShop()
     {
-        //Time.timeScale = 1f;
+        Time.timeScale = 1f; // unpause the game
         btnAirTube.SetActive(false);
         btnFillAir.SetActive(false);
         btnFins.SetActive(false);
