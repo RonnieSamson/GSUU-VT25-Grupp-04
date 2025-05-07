@@ -143,9 +143,9 @@ Material:
     - _CausticScale: 5
     - _CausticStrength: 1
     - _Cutoff: 0.5
-    - _Density: 8.4
-    - _Density_2: 0.4
-    - _Density_3: 14.63
+    - _Density: 10.6
+    - _Density_2: 2.5
+    - _Density_3: 9.77
     - _DetailNormalMapScale: 1
     - _DistortionOffsetSpeed: 1
     - _DistortionScale: 30
@@ -156,7 +156,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LineLength: 0.99
-    - _Linewidth: 0.99611
+    - _Linewidth: 1
     - _METALNESS: 0
     - _Metallic: 0
     - _Mode: 0
@@ -171,7 +171,7 @@ Material:
     - _Speed: 2.41
     - _SrcBlend: 1
     - _Tiling: 0.121
-    - _Transparency: 1.5
+    - _Transparency: 0
     - _UVSec: 0
     - _WaveCount: 0.75
     - _WaveFlowDirection: 1
