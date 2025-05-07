@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 611521124fa564346bad0d0f2065e8b6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 20951
+  packageName: Underwater World - Platformer Tileset
+  packageVersion: 1
+  assetPath: Assets/Underwater World - Platformer Tileset/Demo/Objects/Animation/Object_3.controller
+  uploadId: 709834

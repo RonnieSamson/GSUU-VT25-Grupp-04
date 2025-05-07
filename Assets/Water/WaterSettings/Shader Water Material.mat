@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Water Material
-  m_Shader: {fileID: -6465566751694194690, guid: 83896d812b732ca4e9bb1c3d95978c45, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b5db9e1bb2ccba3419cec2a2f86cb98f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -109,7 +109,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_bb3939d03428485681ab164c674adaa0_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -135,6 +143,9 @@ Material:
     - _CausticScale: 5
     - _CausticStrength: 1
     - _Cutoff: 0.5
+    - _Density: 8.4
+    - _Density_2: 0.4
+    - _Density_3: 14.63
     - _DetailNormalMapScale: 1
     - _DistortionOffsetSpeed: 1
     - _DistortionScale: 30
@@ -145,6 +156,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LineLength: 0.99
+    - _Linewidth: 0.99611
     - _METALNESS: 0
     - _Metallic: 0
     - _Mode: 0
@@ -156,7 +168,10 @@ Material:
     - _SPECULAR_ROUGHNESS: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 2.41
     - _SrcBlend: 1
+    - _Tiling: 0.121
+    - _Transparency: 1.5
     - _UVSec: 0
     - _WaveCount: 0.75
     - _WaveFlowDirection: 1
@@ -167,7 +182,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BASE_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _BaseColor: {r: 0.25098038, g: 0.40392157, b: 1, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BodyColor: {r: 0.17795476, g: 0.35014498, b: 0.8773585, a: 0}
     - _CausticColor: {r: 0.09420614, g: 0.6825433, b: 0.6886792, a: 0}
     - _CausticScrollDir: {r: 0.045, g: 0, b: 0, a: 0}
@@ -177,6 +192,7 @@ Material:
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _Line: {r: 0.6630473, g: 0.8542319, b: 0.9433962, a: 0}
     - _LineColor: {r: 0.11449797, g: 0.5412608, b: 0.7830188, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 0}
