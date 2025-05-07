@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Water Material
-  m_Shader: {fileID: -6465566751694194690, guid: b5db9e1bb2ccba3419cec2a2f86cb98f, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: adf28f28cc79de5438d5811deb5d9c03, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -171,7 +171,7 @@ Material:
     - _Speed: 2.41
     - _SrcBlend: 1
     - _Tiling: 0.121
-    - _Transparency: 0
+    - _Transparency: 1.8
     - _UVSec: 0
     - _WaveCount: 0.75
     - _WaveFlowDirection: 1
