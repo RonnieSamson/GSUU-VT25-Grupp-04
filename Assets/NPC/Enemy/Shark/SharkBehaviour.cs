@@ -66,19 +66,24 @@ public class SharkBehaviour : MonoBehaviour
     }
 
     private void Attack()
+{
+    if (Time.time - lastBiteTime >= biteCooldown)
     {
-        if (Time.time - lastBiteTime >= biteCooldown)
+        var health = player.GetComponent<PlayerHealth>();
+        if (health != null)
         {
-            airTimer.currentTime -= damage; // Deal damage to diver
-            bubbles.Play();
-            bubbleSfx.Play();
-            lastBiteTime = Time.time;
-
-           
-            isChasingPlayer = false;//stop chasing for a bit
-            coolingDown = true;
+            health.TakeDamage(1);
         }
+
+        bubbles.Play();
+        bubbleSfx.Play();
+        lastBiteTime = Time.time;
+
+        isChasingPlayer = false;
+        coolingDown = true;
     }
+}
+
 
     private void DistanceToPlayerCheck()
     {
