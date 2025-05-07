@@ -7,15 +7,18 @@ public class PlayerHealth : MonoBehaviour
     private int currentHealth;
 
     public Image[] hearts; 
-    public Sprite fullHeart;
-    public Sprite emptyHeart;
+    [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite emptyHeart;
 
     private DiverController diver;
+
+    private DeathManager deathManager;
 
     void Start()
     {
         currentHealth = maxHealth;
         diver = GetComponent<DiverController>();
+        deathManager = FindAnyObjectByType<DeathManager>();
         UpdateHearts();
     }
 
@@ -25,7 +28,16 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            diver.Die(); 
+            
+            if(deathManager != null) 
+            {
+                deathManager.TriggerDeath();
+            }
+            if(diver != null)
+            {
+                diver.Die();
+            }
+
         }
 
         UpdateHearts();
