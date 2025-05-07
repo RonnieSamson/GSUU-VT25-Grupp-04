@@ -359,7 +359,17 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      HealthBarBlack_0: -2273113492986477673
+      HealthBarBlack_1: 2872300868631788838
+      HealthBarBlack_2: 7025210584647381
+      HealthBarBlack_3: -4569353267844001177
+      HealthBarBlack_4: 5232322103630044708
+      HealthBarBlack_5: 463926394405310199
+      HealthBarBlack_6: 7418973362023002739
+      HealthBarBlack_7: 8512191440150576272
+      HealthBarBlack_8: 1098044112974186912
+      HealthBarBlack_9: 7641338996342816924
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
