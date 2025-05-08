@@ -11,6 +11,8 @@ public class AirBoostBottle : MonoBehaviour
   private void Start()
   {
     audioSource = GetComponent<AudioSource>();
+
+   
   }
   
   private void OnTriggerEnter2D(Collider2D other)
@@ -25,10 +27,12 @@ public class AirBoostBottle : MonoBehaviour
         // Add air boost to the diver
         timer.AddAir(airBoostAmount);
         diver.ActivateBoost(boostDuration);
+
         // Play sound effect
         if (audioSource != null && airpressureSound != null)
         {
-          audioSource.PlayOneShot(airpressureSound);
+          AudioSource.PlayClipAtPoint(airpressureSound, transform.position);
+          Debug.LogWarning($"{airpressureSound} has been played.");
         }
         else
         {
