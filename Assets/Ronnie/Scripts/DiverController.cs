@@ -12,11 +12,16 @@ public class DiverController : MonoBehaviour
     [SerializeField] private Sprite boostNeutralSprite;
     [SerializeField] private Sprite boostSwimmingSprite;
 
+    [Header("Respawn Settings")]
+    [SerializeField] private float respawnDelay = 3f;
+    [SerializeField] private Transform respawnPoint;
+
     private Rigidbody2D rb;
     private Vector2 moveDirection;
     private SpriteRenderer SpriteRenderer;
 
     public bool isDead = false;
+    private bool isRespawning = false;
 
     // Boost
     private bool isBoosted = false;
@@ -79,13 +84,35 @@ public class DiverController : MonoBehaviour
 
     public void Die()
     {
+        if (isDead) return;
+
         isDead = true;
         moveDirection = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+        isBoosted = false;
+
+        if (!isRespawning)
+            Invoke(nameof(Respawn), respawnDelay);
+        isRespawning = true;
     }
 
     public void ActivateBoost(float duration)
     {
         isBoosted = true;
         boostTimeRemaining = duration;
+    }
+
+    private void Respawn()
+    {
+        transform.position = respawnPoint.position;
+
+        isDead = false;
+        isRespawning = false;
+        SpriteRenderer.sprite = neutralSprite;
+
+        // Återställ luft
+        AirTimer air = FindObjectOfType<AirTimer>();
+        if (air != null)
+            air.ResetAir();
     }
 }
