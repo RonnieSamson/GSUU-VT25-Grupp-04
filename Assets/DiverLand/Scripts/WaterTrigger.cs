@@ -6,8 +6,15 @@ public class WaterTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<DiverController>().enabled = true;
-            other.GetComponent<DiverLandController>().enabled = false;
+            // Aktivera simning
+            DiverController diverSwim = other.GetComponent<DiverController>();
+            DiverLandController diverLand = other.GetComponent<DiverLandController>();
+
+            if (diverSwim != null && diverLand != null)
+            {
+                diverSwim.enabled = true;
+                diverLand.enabled = false;
+            }
         }
     }
 
@@ -15,8 +22,15 @@ public class WaterTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<DiverController>().enabled = false;
-            other.GetComponent<DiverLandController>().enabled = true;
+            // Återgå till gång
+            DiverController diverSwim = other.GetComponent<DiverController>();
+            DiverLandController diverLand = other.GetComponent<DiverLandController>();
+
+            if (diverSwim != null && diverLand != null)
+            {
+                diverSwim.enabled = false;
+                diverLand.enabled = true;
+            }
         }
     }
 }
