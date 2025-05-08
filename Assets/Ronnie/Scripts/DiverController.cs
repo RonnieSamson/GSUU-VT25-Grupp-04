@@ -12,6 +12,10 @@ public class DiverController : MonoBehaviour
     [SerializeField] private Sprite boostNeutralSprite;
     [SerializeField] private Sprite boostSwimmingSprite;
 
+    [Header("Fins Sprites")]
+    [SerializeField] private Sprite finsNeutralSprite;
+    [SerializeField] private Sprite finsSwimmingSprite;
+
     [Header("Respawn Settings")]
     [SerializeField] private float respawnDelay = 3f;
     [SerializeField] private Transform respawnPoint;
@@ -20,16 +24,26 @@ public class DiverController : MonoBehaviour
     private Vector2 moveDirection;
     private SpriteRenderer spriteRenderer;
 
-    public bool isDead = false;
+    private bool isDead = false;
     private bool isRespawning = false;
+
+    // Boost logic
     private bool isBoosted = false;
     private float boostTimeRemaining = 0f;
+
+    // Fins logic
+    private bool finsActive = false;
+    private float finsTimer = 0f;
+    private float finsDuration = 15f;
+    private float originalMoveSpeed;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = neutralSprite;
+
+        originalMoveSpeed = moveSpeed;
     }
 
     void Update()
@@ -40,11 +54,20 @@ public class DiverController : MonoBehaviour
             return;
         }
 
+        // Boost countdown
         if (isBoosted)
         {
-            boostTimeRemaining -= Time.unscaledDeltaTime;
+            boostTimeRemaining -= Time.deltaTime;
             if (boostTimeRemaining <= 0f)
                 isBoosted = false;
+        }
+
+        // Fins countdown
+        if (finsActive)
+        {
+            finsTimer -= Time.deltaTime;
+            if (finsTimer <= 0f)
+                DeactivateFins();
         }
 
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -53,15 +76,26 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
-            spriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
 
-            if (moveX > 0) spriteRenderer.flipX = true;
-            else if (moveX < 0) spriteRenderer.flipX = false;
+            if (isBoosted)
+                spriteRenderer.sprite = boostSwimmingSprite;
+            else if (finsActive)
+                spriteRenderer.sprite = finsSwimmingSprite;
+            else
+                spriteRenderer.sprite = swimmingSprite;
+
+            spriteRenderer.flipX = moveX > 0 ? true : moveX < 0 ? false : spriteRenderer.flipX;
         }
         else
         {
             moveDirection = Vector2.zero;
-            spriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
+
+            if (isBoosted)
+                spriteRenderer.sprite = boostNeutralSprite;
+            else if (finsActive)
+                spriteRenderer.sprite = finsNeutralSprite;
+            else
+                spriteRenderer.sprite = neutralSprite;
         }
     }
 
@@ -81,15 +115,9 @@ public class DiverController : MonoBehaviour
 
         if (!isRespawning)
         {
-            StartCoroutine(RespawnAfterDelay());
+            Invoke(nameof(Respawn), respawnDelay);
             isRespawning = true;
         }
-    }
-
-    private System.Collections.IEnumerator RespawnAfterDelay()
-    {
-        yield return new WaitForSecondsRealtime(respawnDelay);
-        Respawn();
     }
 
     public void ActivateBoost(float duration)
@@ -98,23 +126,33 @@ public class DiverController : MonoBehaviour
         boostTimeRemaining = duration;
     }
 
+    public void ActivateFins()
+    {
+        finsActive = true;
+        finsTimer = finsDuration;
+        moveSpeed = originalMoveSpeed * 2f; // justera om du vill ha annan boost
+    }
+
+    private void DeactivateFins()
+    {
+        finsActive = false;
+        moveSpeed = originalMoveSpeed;
+    }
+
     private void Respawn()
     {
         transform.position = respawnPoint.position;
         isDead = false;
         isRespawning = false;
+
         spriteRenderer.sprite = neutralSprite;
 
         AirTimer air = FindAnyObjectByType<AirTimer>();
         if (air != null)
-        {
             air.ResetAir();
-        }
 
         DeathManager deathManager = FindAnyObjectByType<DeathManager>();
         if (deathManager != null)
-        {
             deathManager.ResetDeath();
-        }
     }
 }

@@ -8,14 +8,14 @@ public class ShopManager : MonoBehaviour
     public GameObject btnAirTube;
     public GameObject btnFillAir;
     public GameObject btnFins;
-    // public playerStats playerstats; n�got s�tt att komma �t spelarens attribut
-    public float money;
+
     public ShopTrigger shopTrigger;
     public bool shopMenuIsOpen = false;
 
-    public void Start()
+    public DiverController diverController; // kopplas i Unity-inspektorn
+
+    void Start()
     {
-           
         openShopText.SetActive(false);
         closeShopText.SetActive(false);
 
@@ -26,22 +26,18 @@ public class ShopManager : MonoBehaviour
 
     void Update()
     {
-
-        //if in range and menu not open
         if (shopTrigger.playerInRange && !shopMenuIsOpen)
         {
             openShopText.SetActive(true);
             closeShopText.SetActive(false);
         }
 
-        //if menu open
         if (shopMenuIsOpen)
         {
             openShopText.SetActive(false);
             closeShopText.SetActive(true);
         }
 
-        //if not in range
         if (!shopTrigger.playerInRange)
         {
             if (shopMenuIsOpen)
@@ -52,27 +48,19 @@ public class ShopManager : MonoBehaviour
             openShopText.SetActive(false);
         }
 
-
         if (shopTrigger.playerInRange && Input.GetKeyDown(KeyCode.E) && !shopMenuIsOpen)
         {
-            Debug.Log("E pressed 1");
-
             OpenShop();
         }
-
         else if (shopMenuIsOpen && Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("E pressed 2");
-
             CloseShop();
         }
     }
 
     public void OpenShop()
     {
-       Time.timeScale = 0f; // Pause the game
-        
-
+        Time.timeScale = 0f;
         btnAirTube.SetActive(true);
         btnFillAir.SetActive(true);
         btnFins.SetActive(true);
@@ -81,37 +69,51 @@ public class ShopManager : MonoBehaviour
 
     public void CloseShop()
     {
-        Time.timeScale = 1f; // unpause the game
+        Time.timeScale = 1f;
         btnAirTube.SetActive(false);
         btnFillAir.SetActive(false);
         btnFins.SetActive(false);
         shopMenuIsOpen = false;
-
     }
 
     public void BuyUpgrade(int cost, string upgradeType)
     {
-        if (money >= cost)
+        if (CashManager.Instance == null)
         {
-            money -= cost;
+            Debug.LogWarning("CashManager saknas.");
+            return;
+        }
 
-            switch (upgradeType) // L�gg till uppgradering h�r i. T.ex Player.swimSpeed = 15;
+        if (CashManager.Instance.HasEnoughCash(cost))
+        {
+            CashManager.Instance.SpendCash(cost);
+
+            switch (upgradeType)
             {
                 case "Airtube":
-                    Debug.Log("Airtube bought");
-
+                    Debug.Log("Airtube köpt!");
                     break;
 
                 case "Fins":
-                    Debug.Log("Fins bought");
-                    
+                    Debug.Log("Fins köpt!");
                     break;
 
                 case "FillAir":
-                    Debug.Log("FillAir bought");
-
+                    Debug.Log("Luft fylld!");
+                    AirTimer air = FindAnyObjectByType<AirTimer>();
+                    if (air != null)
+                    {
+                        air.AddAir(5f); // t.ex. 5 sekunder extra luft
+                    }
                     break;
             }
         }
+        else
+        {
+            Debug.Log("Not enough money for " + upgradeType);
+        }
     }
 }
+
+
+
