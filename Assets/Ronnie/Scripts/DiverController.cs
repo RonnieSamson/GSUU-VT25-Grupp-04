@@ -1,8 +1,9 @@
+
 using UnityEngine;
 
 public class DiverController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 20f;
 
     [Header("Sprites")]
     [SerializeField] private Sprite neutralSprite;
@@ -12,10 +13,6 @@ public class DiverController : MonoBehaviour
     [SerializeField] private Sprite boostNeutralSprite;
     [SerializeField] private Sprite boostSwimmingSprite;
 
-    [Header("Fins Sprites")]
-    [SerializeField] private Sprite finsNeutralSprite;
-    [SerializeField] private Sprite finsSwimmingSprite;
-
     [Header("Respawn Settings")]
     [SerializeField] private float respawnDelay = 3f;
     [SerializeField] private Transform respawnPoint;
@@ -24,17 +21,10 @@ public class DiverController : MonoBehaviour
     private Vector2 moveDirection;
     private SpriteRenderer spriteRenderer;
 
-    private bool isDead = false;
+    public bool isDead = false;
     private bool isRespawning = false;
-
-    // Boost logic
     private bool isBoosted = false;
     private float boostTimeRemaining = 0f;
-
-    // Fins logic
-    private bool finsActive = false;
-    private float finsTimer = 0f;
-    private float finsDuration = 15f;
     private float originalMoveSpeed;
 
     void Start()
@@ -42,7 +32,6 @@ public class DiverController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = neutralSprite;
-
         originalMoveSpeed = moveSpeed;
     }
 
@@ -54,20 +43,15 @@ public class DiverController : MonoBehaviour
             return;
         }
 
-        // Boost countdown
         if (isBoosted)
         {
             boostTimeRemaining -= Time.deltaTime;
             if (boostTimeRemaining <= 0f)
+            {
                 isBoosted = false;
-        }
-
-        // Fins countdown
-        if (finsActive)
-        {
-            finsTimer -= Time.deltaTime;
-            if (finsTimer <= 0f)
-                DeactivateFins();
+                moveSpeed = originalMoveSpeed;
+                spriteRenderer.sprite = neutralSprite;
+            }
         }
 
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -76,26 +60,15 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
+            spriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
 
-            if (isBoosted)
-                spriteRenderer.sprite = boostSwimmingSprite;
-            else if (finsActive)
-                spriteRenderer.sprite = finsSwimmingSprite;
-            else
-                spriteRenderer.sprite = swimmingSprite;
-
-            spriteRenderer.flipX = moveX > 0 ? true : moveX < 0 ? false : spriteRenderer.flipX;
+            if (moveX > 0) spriteRenderer.flipX = true;
+            else if (moveX < 0) spriteRenderer.flipX = false;
         }
         else
         {
             moveDirection = Vector2.zero;
-
-            if (isBoosted)
-                spriteRenderer.sprite = boostNeutralSprite;
-            else if (finsActive)
-                spriteRenderer.sprite = finsNeutralSprite;
-            else
-                spriteRenderer.sprite = neutralSprite;
+            spriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
         }
     }
 
@@ -120,25 +93,6 @@ public class DiverController : MonoBehaviour
         }
     }
 
-    public void ActivateBoost(float duration)
-    {
-        isBoosted = true;
-        boostTimeRemaining = duration;
-    }
-
-    public void ActivateFins()
-    {
-        finsActive = true;
-        finsTimer = finsDuration;
-        moveSpeed = originalMoveSpeed * 2f; // justera om du vill ha annan boost
-    }
-
-    private void DeactivateFins()
-    {
-        finsActive = false;
-        moveSpeed = originalMoveSpeed;
-    }
-
     private void Respawn()
     {
         transform.position = respawnPoint.position;
@@ -147,12 +101,33 @@ public class DiverController : MonoBehaviour
 
         spriteRenderer.sprite = neutralSprite;
 
-        AirTimer air = FindAnyObjectByType<AirTimer>();
+        AirTimer air = FindFirstObjectByType<AirTimer>();
         if (air != null)
+        {
             air.ResetAir();
+        }
 
-        DeathManager deathManager = FindAnyObjectByType<DeathManager>();
+        DeathManager deathManager = FindFirstObjectByType<DeathManager>();
         if (deathManager != null)
+        {
             deathManager.ResetDeath();
+        }
+    }
+
+    // Används av flaskan (AirBoostBottle)
+    public void ActivateBoost(float duration)
+    {
+        isBoosted = true;
+        boostTimeRemaining = duration;
+    }
+
+    // Används av shoppen (fenor)
+    public void ActivateFinsBoost(float boostSpeed, float duration)
+    {
+        isBoosted = true;
+        boostTimeRemaining = duration;
+        moveSpeed = boostSpeed;
     }
 }
+
+

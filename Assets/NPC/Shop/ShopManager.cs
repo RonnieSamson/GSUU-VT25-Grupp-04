@@ -1,7 +1,9 @@
 using UnityEngine;
 
+
 public class ShopManager : MonoBehaviour
 {
+    [SerializeField] private DiverController diverController;
     public GameObject shopUI;
     public GameObject openShopText;
     public GameObject closeShopText;
@@ -12,7 +14,7 @@ public class ShopManager : MonoBehaviour
     public ShopTrigger shopTrigger;
     public bool shopMenuIsOpen = false;
 
-    public DiverController diverController; // kopplas i Unity-inspektorn
+   
 
     void Start()
     {
@@ -95,8 +97,12 @@ public class ShopManager : MonoBehaviour
                     break;
 
                 case "Fins":
-                    Debug.Log("Fins köpt!");
-                    break;
+    Debug.Log("Fins bought");
+    if (diverController != null)
+    {
+        diverController.ActivateFinsBoost(10f, 40f); // 10 sekunder, 40 i speed
+    }
+    break;
 
                 case "FillAir":
                     Debug.Log("Luft fylld!");
