@@ -18,20 +18,18 @@ public class DiverController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 moveDirection;
-    private SpriteRenderer SpriteRenderer;
+    private SpriteRenderer spriteRenderer;
 
     public bool isDead = false;
     private bool isRespawning = false;
-
-    // Boost
     private bool isBoosted = false;
     private float boostTimeRemaining = 0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        SpriteRenderer = GetComponent<SpriteRenderer>();
-        SpriteRenderer.sprite = neutralSprite;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = neutralSprite;
     }
 
     void Update()
@@ -42,14 +40,11 @@ public class DiverController : MonoBehaviour
             return;
         }
 
-        // Hantera boost-timer
         if (isBoosted)
         {
-            boostTimeRemaining -= Time.deltaTime;
+            boostTimeRemaining -= Time.unscaledDeltaTime;
             if (boostTimeRemaining <= 0f)
-            {
                 isBoosted = false;
-            }
         }
 
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -58,22 +53,15 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
+            spriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
 
-            // Välj rätt sprite
-            SpriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
-
-            // Flip beroende på riktning
-            if (moveX > 0)
-                SpriteRenderer.flipX = true;
-            else if (moveX < 0)
-                SpriteRenderer.flipX = false;
+            if (moveX > 0) spriteRenderer.flipX = true;
+            else if (moveX < 0) spriteRenderer.flipX = false;
         }
         else
         {
             moveDirection = Vector2.zero;
-
-            // Välj neutral sprite
-            SpriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
+            spriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
         }
     }
 
@@ -92,8 +80,16 @@ public class DiverController : MonoBehaviour
         isBoosted = false;
 
         if (!isRespawning)
-            Invoke(nameof(Respawn), respawnDelay);
-        isRespawning = true;
+        {
+            StartCoroutine(RespawnAfterDelay());
+            isRespawning = true;
+        }
+    }
+
+    private System.Collections.IEnumerator RespawnAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(respawnDelay);
+        Respawn();
     }
 
     public void ActivateBoost(float duration)
@@ -105,14 +101,20 @@ public class DiverController : MonoBehaviour
     private void Respawn()
     {
         transform.position = respawnPoint.position;
-
         isDead = false;
         isRespawning = false;
-        SpriteRenderer.sprite = neutralSprite;
+        spriteRenderer.sprite = neutralSprite;
 
-        // Återställ luft
-        AirTimer air = FindObjectOfType<AirTimer>();
+        AirTimer air = FindAnyObjectByType<AirTimer>();
         if (air != null)
+        {
             air.ResetAir();
+        }
+
+        DeathManager deathManager = FindAnyObjectByType<DeathManager>();
+        if (deathManager != null)
+        {
+            deathManager.ResetDeath();
+        }
     }
 }
