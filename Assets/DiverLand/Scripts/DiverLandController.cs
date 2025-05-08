@@ -9,8 +9,8 @@ public class DiverLandController : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.1f;
 
     [Header("Sprites")]
-    [SerializeField] private Sprite idleSprite;   // när spelaren står still
-    [SerializeField] private Sprite walkSprite;   // när spelaren rör sig
+    [SerializeField] private Sprite idleSprite;   
+    [SerializeField] private Sprite walkSprite;  
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -41,21 +41,30 @@ public class DiverLandController : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         Debug.Log("Grounded: " + isGrounded);
 
-        // Rörelse
-        rb.linearVelocity = new Vector2(moveX * walkSpeed, rb.linearVelocity.y);
 
-        // Vänd sprite
+        rb.linearVelocity = new Vector2(moveX * walkSpeed, rb.linearVelocity.y); 
+
+
         if (moveX > 0)
             spriteRenderer.flipX = true;
         else if (moveX < 0)
             spriteRenderer.flipX = false;
 
-        // Sprite: stå still eller gå
+
         if (Mathf.Abs(moveX) > 0.01f)
             spriteRenderer.sprite = walkSprite;
         else
             spriteRenderer.sprite = idleSprite;
 
-        // Hop
+
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+    }
+
+    private void Jump()
+    {
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); 
     }
 }

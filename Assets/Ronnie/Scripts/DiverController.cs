@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DiverController : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class DiverController : MonoBehaviour
 
     public bool isDead = false;
 
+    private Coroutine gravityCoroutine;
+    private bool isTransitioningGravity = false; 
+
     // Boost
     private bool isBoosted = false;
     private float boostTimeRemaining = 0f;
@@ -32,13 +36,19 @@ public class DiverController : MonoBehaviour
     void OnEnable()
     {
         if (rb == null) rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0f; // Simma utan gravitation
+
+
+        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
+        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(0f));
     }
 
     void OnDisable()
     {
         if (rb == null) rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 1f; // Återställ om vi går upp på land
+
+
+        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
+        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(1f));
     }
 
     void Update()
@@ -81,6 +91,8 @@ public class DiverController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isTransitioningGravity) return; 
+
         rb.linearVelocity = moveDirection * moveSpeed;
     }
 
@@ -94,5 +106,25 @@ public class DiverController : MonoBehaviour
     {
         isBoosted = true;
         boostTimeRemaining = duration;
+    }
+
+
+    private IEnumerator ChangeGravitySmoothly(float targetGravity)
+    {
+        isTransitioningGravity = true;
+
+        float duration = 0.5f;
+        float startGravity = rb.gravityScale;
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            rb.gravityScale = Mathf.Lerp(startGravity, targetGravity, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.gravityScale = targetGravity;
+        isTransitioningGravity = false;
     }
 }
