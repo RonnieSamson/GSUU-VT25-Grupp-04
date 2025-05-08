@@ -4,26 +4,29 @@ using TMPro;
 
 public class AirTimer : MonoBehaviour
 {
-  [SerializeField] private float startTime = 10f;
-  public float currentTime;
+    [SerializeField] private float startTime = 10f;
+    public float currentTime;
 
-  [SerializeField] private Text airTimerText;
-  [SerializeField] private Image airTimerBar;
+    [SerializeField] private Text airTimerText;
+    [SerializeField] private Image airTimerBar;
 
-  [SerializeField] private Color normalColor = Color.green;
-  [SerializeField] private Color warningColor = Color.red;
+    [SerializeField] private Color normalColor = Color.green;
+    [SerializeField] private Color warningColor = Color.red;
 
-  private DeathManager deathManager;
+    [Header("Död och Game Over")]
+    [SerializeField] private Sprite deadSprite;
+    [SerializeField] private SpriteRenderer diverRenderer;
+    [SerializeField] private GameObject gameOverText;
 
-  private bool hasDied = false;
+    private bool hasDied = false;
 
-  void Start()
-  {
-    currentTime = startTime;
-    deathManager = FindAnyObjectByType<DeathManager>();
-  }
+    void Start()
+    {
+        currentTime = startTime;
+        gameOverText.SetActive(false);
+    }
 
-  void Update()
+    void Update()
     {
         if (hasDied) return;
 
@@ -53,14 +56,29 @@ public class AirTimer : MonoBehaviour
         else
         {
             hasDied = true;
-            if (deathManager != null)
+            diverRenderer.sprite = deadSprite;
+            gameOverText.SetActive(true);
+
+            DiverController diver = Object.FindObjectOfType<DiverController>();
+            if (diver != null)
             {
-                deathManager.TriggerDeath();
+                diver.Die();
             }
         }
     }
-  public void AddAir(float extraTime)
-  {
-    currentTime = Mathf.Min(currentTime + extraTime, startTime);
-  }
+
+    public void AddAir(float extraTime)
+    {
+        currentTime = Mathf.Min(currentTime + extraTime, startTime);
+    }
+
+    public void ResetAir()
+    {
+        currentTime = startTime;
+        hasDied = false;
+        gameOverText.SetActive(false);
+
+        airTimerText.color = normalColor;
+        airTimerBar.color = normalColor;
+    }
 }
