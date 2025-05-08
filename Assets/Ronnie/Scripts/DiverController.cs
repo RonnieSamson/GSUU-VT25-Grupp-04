@@ -29,6 +29,18 @@ public class DiverController : MonoBehaviour
         SpriteRenderer.sprite = neutralSprite;
     }
 
+    void OnEnable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f; // Simma utan gravitation
+    }
+
+    void OnDisable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 1f; // Återställ om vi går upp på land
+    }
+
     void Update()
     {
         if (isDead)
@@ -53,11 +65,8 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
-
-            // Välj rätt sprite
             SpriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
 
-            // Flip beroende på riktning
             if (moveX > 0)
                 SpriteRenderer.flipX = true;
             else if (moveX < 0)
@@ -66,8 +75,6 @@ public class DiverController : MonoBehaviour
         else
         {
             moveDirection = Vector2.zero;
-
-            // Välj neutral sprite
             SpriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
         }
     }

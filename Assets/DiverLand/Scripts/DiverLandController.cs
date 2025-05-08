@@ -23,6 +23,18 @@ public class DiverLandController : MonoBehaviour
         spriteRenderer.sprite = idleSprite;
     }
 
+    void OnEnable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 1f;
+    }
+
+    void OnDisable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+    }
+
     void Update()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -44,10 +56,6 @@ public class DiverLandController : MonoBehaviour
         else
             spriteRenderer.sprite = idleSprite;
 
-        // Hoppa
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        }
+        // Hop
     }
 }
