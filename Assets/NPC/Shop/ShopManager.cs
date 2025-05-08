@@ -8,13 +8,14 @@ public class ShopManager : MonoBehaviour
     public GameObject btnAirTube;
     public GameObject btnFillAir;
     public GameObject btnFins;
-    // public playerStats playerstats; något sätt att komma åt spelarens attribut
+    // public playerStats playerstats; nï¿½got sï¿½tt att komma ï¿½t spelarens attribut
     public float money;
     public ShopTrigger shopTrigger;
     public bool shopMenuIsOpen = false;
 
     public void Start()
     {
+           
         openShopText.SetActive(false);
         closeShopText.SetActive(false);
 
@@ -94,7 +95,7 @@ public class ShopManager : MonoBehaviour
         {
             money -= cost;
 
-            switch (upgradeType) // Lägg till uppgradering här i. T.ex Player.swimSpeed = 15;
+            switch (upgradeType) // Lï¿½gg till uppgradering hï¿½r i. T.ex Player.swimSpeed = 15;
             {
                 case "Airtube":
                     Debug.Log("Airtube bought");
