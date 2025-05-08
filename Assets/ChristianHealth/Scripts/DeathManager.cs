@@ -8,6 +8,9 @@ public class DeathManager : MonoBehaviour
     [SerializeField] private SpriteRenderer diverRenderer;
     [SerializeField] private GameObject gameOverText;
 
+    [SerializeField] private AudioClip deathSound;
+    private AudioSource audioSource;
+
     private bool hasDied = false;
     private DiverController diver;
 
@@ -15,6 +18,7 @@ public class DeathManager : MonoBehaviour
     {
         gameOverText.SetActive(false); 
         diver = FindObjectOfType<DiverController>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void TriggerDeath()
@@ -27,6 +31,15 @@ public class DeathManager : MonoBehaviour
         if (diver != null)
         {
             diver.Die();
+        }
+
+        if (audioSource != null && deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or deathSound is not assigned in DeathManager.");
         }
         Time.timeScale= 0;
     }
