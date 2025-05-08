@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class DiverController : MonoBehaviour
 {
@@ -19,41 +18,18 @@ public class DiverController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 moveDirection;
-    private SpriteRenderer SpriteRenderer;
+    private SpriteRenderer spriteRenderer;
 
     public bool isDead = false;
     private bool isRespawning = false;
-
-    private Coroutine gravityCoroutine;
-    private bool isTransitioningGravity = false; 
-
-    // Boost
     private bool isBoosted = false;
     private float boostTimeRemaining = 0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        SpriteRenderer = GetComponent<SpriteRenderer>();
-        SpriteRenderer.sprite = neutralSprite;
-    }
-
-    void OnEnable()
-    {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-
-
-        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
-        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(0f));
-    }
-
-    void OnDisable()
-    {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-
-
-        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
-        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(1f));
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = neutralSprite;
     }
 
     void Update()
@@ -64,14 +40,11 @@ public class DiverController : MonoBehaviour
             return;
         }
 
-        // Hantera boost-timer
         if (isBoosted)
         {
-            boostTimeRemaining -= Time.deltaTime;
+            boostTimeRemaining -= Time.unscaledDeltaTime;
             if (boostTimeRemaining <= 0f)
-            {
                 isBoosted = false;
-            }
         }
 
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -80,24 +53,20 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
-            SpriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
+            spriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
 
-            if (moveX > 0)
-                SpriteRenderer.flipX = true;
-            else if (moveX < 0)
-                SpriteRenderer.flipX = false;
+            if (moveX > 0) spriteRenderer.flipX = true;
+            else if (moveX < 0) spriteRenderer.flipX = false;
         }
         else
         {
             moveDirection = Vector2.zero;
-            SpriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
+            spriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
         }
     }
 
     void FixedUpdate()
     {
-        if (isTransitioningGravity) return; 
-
         rb.linearVelocity = moveDirection * moveSpeed;
     }
 
@@ -111,8 +80,16 @@ public class DiverController : MonoBehaviour
         isBoosted = false;
 
         if (!isRespawning)
-            Invoke(nameof(Respawn), respawnDelay);
-        isRespawning = true;
+        {
+            StartCoroutine(RespawnAfterDelay());
+            isRespawning = true;
+        }
+    }
+
+    private System.Collections.IEnumerator RespawnAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(respawnDelay);
+        Respawn();
     }
 
     public void ActivateBoost(float duration)
@@ -120,36 +97,24 @@ public class DiverController : MonoBehaviour
         isBoosted = true;
         boostTimeRemaining = duration;
     }
+
     private void Respawn()
     {
         transform.position = respawnPoint.position;
-
         isDead = false;
         isRespawning = false;
-        SpriteRenderer.sprite = neutralSprite;
+        spriteRenderer.sprite = neutralSprite;
 
-        // Återställ luft
-        AirTimer air = FindObjectOfType<AirTimer>();
+        AirTimer air = FindAnyObjectByType<AirTimer>();
         if (air != null)
-            air.ResetAir();
-    }
-
-    private IEnumerator ChangeGravitySmoothly(float targetGravity)
-    {
-        isTransitioningGravity = true;
-
-        float duration = 0.5f;
-        float startGravity = rb.gravityScale;
-        float timeElapsed = 0f;
-
-        while (timeElapsed < duration)
         {
-            rb.gravityScale = Mathf.Lerp(startGravity, targetGravity, timeElapsed / duration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
+            air.ResetAir();
         }
 
-        rb.gravityScale = targetGravity;
-        isTransitioningGravity = false;
+        DeathManager deathManager = FindAnyObjectByType<DeathManager>();
+        if (deathManager != null)
+        {
+            deathManager.ResetDeath();
+        }
     }
 }
