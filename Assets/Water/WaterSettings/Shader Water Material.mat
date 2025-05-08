@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Water Material
-  m_Shader: {fileID: -6465566751694194690, guid: b5db9e1bb2ccba3419cec2a2f86cb98f, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: adf28f28cc79de5438d5811deb5d9c03, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -143,9 +143,9 @@ Material:
     - _CausticScale: 5
     - _CausticStrength: 1
     - _Cutoff: 0.5
-    - _Density: 8.4
-    - _Density_2: 0.4
-    - _Density_3: 14.63
+    - _Density: 10.6
+    - _Density_2: 2.5
+    - _Density_3: 9.77
     - _DetailNormalMapScale: 1
     - _DistortionOffsetSpeed: 1
     - _DistortionScale: 30
@@ -156,7 +156,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LineLength: 0.99
-    - _Linewidth: 0.99611
+    - _Linewidth: 1
     - _METALNESS: 0
     - _Metallic: 0
     - _Mode: 0
@@ -171,7 +171,7 @@ Material:
     - _Speed: 2.41
     - _SrcBlend: 1
     - _Tiling: 0.121
-    - _Transparency: 1.5
+    - _Transparency: 1.8
     - _UVSec: 0
     - _WaveCount: 0.75
     - _WaveFlowDirection: 1
