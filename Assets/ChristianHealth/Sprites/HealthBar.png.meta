@@ -130,10 +130,10 @@ TextureImporter:
       name: HealthBar_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 10
-        width: 114
-        height: 114
+        x: 5
+        y: 11
+        width: 112
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,10 +152,10 @@ TextureImporter:
       name: HealthBar_1
       rect:
         serializedVersion: 2
-        x: 126
-        y: 10
-        width: 115
-        height: 114
+        x: 127
+        y: 11
+        width: 113
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,10 +174,10 @@ TextureImporter:
       name: HealthBar_2
       rect:
         serializedVersion: 2
-        x: 249
-        y: 10
-        width: 114
-        height: 114
+        x: 250
+        y: 11
+        width: 112
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,10 +196,10 @@ TextureImporter:
       name: HealthBar_3
       rect:
         serializedVersion: 2
-        x: 371
-        y: 10
-        width: 115
-        height: 114
+        x: 372
+        y: 11
+        width: 113
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,10 +218,10 @@ TextureImporter:
       name: HealthBar_4
       rect:
         serializedVersion: 2
-        x: 494
-        y: 10
-        width: 114
-        height: 114
+        x: 495
+        y: 11
+        width: 112
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -240,10 +240,10 @@ TextureImporter:
       name: HealthBar_5
       rect:
         serializedVersion: 2
-        x: 616
-        y: 10
-        width: 115
-        height: 114
+        x: 617
+        y: 11
+        width: 113
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -262,10 +262,10 @@ TextureImporter:
       name: HealthBar_6
       rect:
         serializedVersion: 2
-        x: 739
-        y: 10
-        width: 114
-        height: 114
+        x: 740
+        y: 11
+        width: 112
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,10 +284,10 @@ TextureImporter:
       name: HealthBar_7
       rect:
         serializedVersion: 2
-        x: 861
-        y: 10
-        width: 115
-        height: 114
+        x: 862
+        y: 11
+        width: 113
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,10 +306,10 @@ TextureImporter:
       name: HealthBar_8
       rect:
         serializedVersion: 2
-        x: 984
-        y: 10
-        width: 114
-        height: 114
+        x: 985
+        y: 11
+        width: 112
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,10 +328,10 @@ TextureImporter:
       name: HealthBar_9
       rect:
         serializedVersion: 2
-        x: 1106
-        y: 10
-        width: 115
-        height: 114
+        x: 1107
+        y: 11
+        width: 113
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -350,7 +350,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 825b755c2eb720b42a6526ce03c857d4
     internalID: 0
     vertices: []
     indices: 

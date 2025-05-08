@@ -13,60 +13,52 @@ public class AirTimer : MonoBehaviour
   [SerializeField] private Color normalColor = Color.green;
   [SerializeField] private Color warningColor = Color.red;
 
-  [Header("Död och Game Over")]
-  [SerializeField] private Sprite deadSprite;
-  [SerializeField] private SpriteRenderer diverRenderer;
-  [SerializeField] private GameObject gameOverText;
+  private DeathManager deathManager;
 
   private bool hasDied = false;
 
   void Start()
   {
     currentTime = startTime;
-    gameOverText.SetActive(false);
+    deathManager = FindAnyObjectByType<DeathManager>();
   }
 
   void Update()
-  {
-    if (hasDied) return;
-
-    if (currentTime > 0f)
     {
-      currentTime -= Time.deltaTime;
-      if (currentTime < 0f) currentTime = 0f;
+        if (hasDied) return;
 
-      int minutes = Mathf.FloorToInt(currentTime / 60f);
-      int seconds = Mathf.FloorToInt(currentTime % 60f);
-      airTimerText.text = $"{minutes:00}:{seconds:00}";
+        if (currentTime > 0f)
+        {
+            currentTime -= Time.deltaTime;
+            if (currentTime < 0f) currentTime = 0f;
 
-      float fillAmount = currentTime / startTime;
-      airTimerBar.fillAmount = fillAmount;
+            int minutes = Mathf.FloorToInt(currentTime / 60f);
+            int seconds = Mathf.FloorToInt(currentTime % 60f);
+            airTimerText.text = $"{minutes:00}:{seconds:00}";
 
-      if (currentTime <= 5f)
-      {
-        airTimerText.color = warningColor;
-        airTimerBar.color = warningColor;
-      }
-      else
-      {
-        airTimerText.color = normalColor;
-        airTimerBar.color = normalColor;
-      }
+            float fillAmount = currentTime / startTime;
+            airTimerBar.fillAmount = fillAmount;
+
+            if (currentTime <= 5f)
+            {
+                airTimerText.color = warningColor;
+                airTimerBar.color = warningColor;
+            }
+            else
+            {
+                airTimerText.color = normalColor;
+                airTimerBar.color = normalColor;
+            }
+        }
+        else
+        {
+            hasDied = true;
+            if (deathManager != null)
+            {
+                deathManager.TriggerDeath();
+            }
+        }
     }
-    else
-    {
-      hasDied = true;
-      diverRenderer.sprite = deadSprite;
-      gameOverText.SetActive(true);
-
-      // Meddela DiverController att dykaren är död
-      DiverController diver = Object.FindFirstObjectByType<DiverController>();
-      if (diver != null)
-      {
-        diver.Die();
-      }
-    }
-  }
   public void AddAir(float extraTime)
   {
     currentTime = Mathf.Min(currentTime + extraTime, startTime);
