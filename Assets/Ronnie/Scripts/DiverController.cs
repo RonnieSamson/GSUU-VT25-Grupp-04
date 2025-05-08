@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DiverController : MonoBehaviour
 {
@@ -25,11 +26,30 @@ public class DiverController : MonoBehaviour
     private bool isBoosted = false;
     private float boostTimeRemaining = 0f;
 
+    private Coroutine gravityCoroutine;
+    private bool isTransitioningGravity = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = neutralSprite;
+    }
+
+    void OnEnable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+
+        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
+        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(0f)); 
+    }
+
+    void OnDisable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+
+        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
+        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(1f));
     }
 
     void Update()
@@ -67,6 +87,8 @@ public class DiverController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isTransitioningGravity) return; 
+
         rb.linearVelocity = moveDirection * moveSpeed;
     }
 
@@ -86,18 +108,16 @@ public class DiverController : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator RespawnAfterDelay()
+    private IEnumerator RespawnAfterDelay()
     {
         yield return new WaitForSecondsRealtime(respawnDelay);
         Respawn();
     }
-
     public void ActivateBoost(float duration)
     {
         isBoosted = true;
         boostTimeRemaining = duration;
     }
-
     private void Respawn()
     {
         transform.position = respawnPoint.position;
@@ -116,5 +136,24 @@ public class DiverController : MonoBehaviour
         {
             deathManager.ResetDeath();
         }
+    }
+
+    private IEnumerator ChangeGravitySmoothly(float targetGravity)
+    {
+        isTransitioningGravity = true;
+
+        float duration = 0.5f;
+        float startGravity = rb.gravityScale;
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            rb.gravityScale = Mathf.Lerp(startGravity, targetGravity, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.gravityScale = targetGravity;
+        isTransitioningGravity = false;
     }
 }
