@@ -7,15 +7,15 @@ public class WaterTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Hämta komponenter för DiverController och DiverLandController
+
             DiverController diverSwim = other.GetComponent<DiverController>();
             DiverLandController diverLand = other.GetComponent<DiverLandController>();
 
             if (diverSwim != null && diverLand != null)
             {
-                // Stäng av landkontrollen och aktivera simkontrollen
-                diverLand.enabled = false;  // Stäng av gångläge
-                diverSwim.enabled = true;   // Aktivera simning
+      
+                diverLand.enabled = false;  
+                diverSwim.enabled = true;  
                 Debug.Log("Swim mode activated.");
             }
         }
@@ -26,18 +26,18 @@ public class WaterTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Hämta komponenter för DiverController och DiverLandController
+
             DiverController diverSwim = other.GetComponent<DiverController>();
             DiverLandController diverLand = other.GetComponent<DiverLandController>();
 
             if (diverSwim != null && diverLand != null)
             {
-                // Vi kontrollerar nu om spelaren är i vattnet när de lämnar triggern
-                if (!diverSwim.enabled) // Om simläget inte är aktivt (spelaren inte är i vattnet)
+   
+                if (!diverSwim.enabled) 
                 {
                     // Återgå till gångläge
-                    diverSwim.enabled = false;  // Stäng av simkontrollen
-                    diverLand.enabled = true;   // Aktivera gångläge
+                    diverSwim.enabled = false;  
+                    diverLand.enabled = true;  
                     Debug.Log("Land mode activated.");
                 }
             }
