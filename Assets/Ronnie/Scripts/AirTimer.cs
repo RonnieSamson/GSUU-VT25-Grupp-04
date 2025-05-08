@@ -4,26 +4,26 @@ using TMPro;
 
 public class AirTimer : MonoBehaviour
 {
-  [SerializeField] private float startTime = 10f;
-  public float currentTime;
+    [SerializeField] private float startTime = 10f;
+    public float currentTime;
 
-  [SerializeField] private Text airTimerText;
-  [SerializeField] private Image airTimerBar;
+    [SerializeField] private Text airTimerText;
+    [SerializeField] private Image airTimerBar;
 
-  [SerializeField] private Color normalColor = Color.green;
-  [SerializeField] private Color warningColor = Color.red;
+    [SerializeField] private Color normalColor = Color.green;
+    [SerializeField] private Color warningColor = Color.red;
+    [SerializeField] private GameObject gameOverText;
+   
 
-  private DeathManager deathManager;
+    private bool hasDied = false;
+    private DeathManager deathManager;
+    void Start()
+    {
+        currentTime = startTime;
+        deathManager = FindAnyObjectByType<DeathManager>();
+    }
 
-  private bool hasDied = false;
-
-  void Start()
-  {
-    currentTime = startTime;
-    deathManager = FindAnyObjectByType<DeathManager>();
-  }
-
-  void Update()
+    void Update()
     {
         if (hasDied) return;
 
@@ -59,8 +59,20 @@ public class AirTimer : MonoBehaviour
             }
         }
     }
-  public void AddAir(float extraTime)
-  {
-    currentTime = Mathf.Min(currentTime + extraTime, startTime);
-  }
+
+    public void AddAir(float extraTime)
+    {
+        currentTime = Mathf.Min(currentTime + extraTime, startTime);
+    }
+
+    public void ResetAir()
+    {
+        currentTime = startTime;
+        hasDied = false;
+        gameOverText.SetActive(false);
+
+        airTimerText.color = normalColor;
+        airTimerBar.color = normalColor;
+    }
 }
+
