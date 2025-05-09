@@ -23,8 +23,13 @@ public class AirTimer : MonoBehaviour
         deathManager = FindAnyObjectByType<DeathManager>();
     }
 
+    
     void Update()
     {
+
+        var diver = FindAnyObjectByType<DiverController>();
+        if (diver == null || !diver.enabled) return;
+
         if (hasDied) return;
 
         if (currentTime > 0f)
@@ -59,6 +64,7 @@ public class AirTimer : MonoBehaviour
             }
         }
     }
+
 
     public void AddAir(float extraTime)
     {
