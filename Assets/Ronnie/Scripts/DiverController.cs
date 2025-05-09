@@ -1,17 +1,20 @@
 using UnityEngine;
-using System.Collections;
 
 public class DiverController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 20f;
 
     [Header("Sprites")]
     [SerializeField] private Sprite neutralSprite;
     [SerializeField] private Sprite swimmingSprite;
 
     [Header("Boost Sprites")]
-    [SerializeField] private Sprite boostNeutralSprite;
-    [SerializeField] private Sprite boostSwimmingSprite;
+    [SerializeField] private Sprite bottleBoostNeutralSprite;
+    [SerializeField] private Sprite bottleBoostSwimmingSprite;
+    [SerializeField] private Sprite finsBoostNeutralSprite;
+    [SerializeField] private Sprite finsBoostSwimmingSprite;
+    [SerializeField] private Sprite soloTubeNeutralSprite;
+    [SerializeField] private Sprite soloTubeSwimmingSprite;
 
     [Header("Respawn Settings")]
     [SerializeField] private float respawnDelay = 3f;
@@ -23,33 +26,23 @@ public class DiverController : MonoBehaviour
 
     public bool isDead = false;
     private bool isRespawning = false;
-    private bool isBoosted = false;
-    private float boostTimeRemaining = 0f;
 
-    private Coroutine gravityCoroutine;
-    private bool isTransitioningGravity = false;
+    private float boostTimeRemaining = 0f;
+    private float finsBoostTimeRemaining = 0f;
+    private float airTubeTimeRemaining = 0f;
+
+    private bool bottleBoostActive = false;
+    private bool finsBoostActive = false;
+    private bool airTubeActive = false;
+
+    private float originalMoveSpeed;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = neutralSprite;
-    }
-
-    void OnEnable()
-    {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-
-        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
-        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(0f)); 
-    }
-
-    void OnDisable()
-    {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-
-        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
-        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(1f));
+        originalMoveSpeed = moveSpeed;
     }
 
     void Update()
@@ -60,11 +53,28 @@ public class DiverController : MonoBehaviour
             return;
         }
 
-        if (isBoosted)
+        if (bottleBoostActive)
         {
-            boostTimeRemaining -= Time.unscaledDeltaTime;
+            boostTimeRemaining -= Time.deltaTime;
             if (boostTimeRemaining <= 0f)
-                isBoosted = false;
+                bottleBoostActive = false;
+        }
+
+        if (finsBoostActive)
+        {
+            finsBoostTimeRemaining -= Time.deltaTime;
+            if (finsBoostTimeRemaining <= 0f)
+            {
+                finsBoostActive = false;
+                moveSpeed = originalMoveSpeed;
+            }
+        }
+
+        if (airTubeActive)
+        {
+            airTubeTimeRemaining -= Time.deltaTime;
+            if (airTubeTimeRemaining <= 0f)
+                airTubeActive = false;
         }
 
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -73,22 +83,35 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
-            spriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
 
-            if (moveX > 0) spriteRenderer.flipX = true;
-            else if (moveX < 0) spriteRenderer.flipX = false;
+            if (finsBoostActive)
+                spriteRenderer.sprite = finsBoostSwimmingSprite;
+            else if (bottleBoostActive)
+                spriteRenderer.sprite = bottleBoostSwimmingSprite;
+            else if (airTubeActive)
+                spriteRenderer.sprite = soloTubeSwimmingSprite;
+            else
+                spriteRenderer.sprite = swimmingSprite;
+
+            spriteRenderer.flipX = moveX > 0f;
         }
         else
         {
             moveDirection = Vector2.zero;
-            spriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
+
+            if (finsBoostActive)
+                spriteRenderer.sprite = finsBoostNeutralSprite;
+            else if (bottleBoostActive)
+                spriteRenderer.sprite = bottleBoostNeutralSprite;
+            else if (airTubeActive)
+                spriteRenderer.sprite = soloTubeNeutralSprite;
+            else
+                spriteRenderer.sprite = neutralSprite;
         }
     }
 
     void FixedUpdate()
     {
-        if (isTransitioningGravity) return; 
-
         rb.linearVelocity = moveDirection * moveSpeed;
     }
 
@@ -99,25 +122,19 @@ public class DiverController : MonoBehaviour
         isDead = true;
         moveDirection = Vector2.zero;
         rb.linearVelocity = Vector2.zero;
-        isBoosted = false;
+
+        bottleBoostActive = false;
+        finsBoostActive = false;
+        airTubeActive = false;
+        moveSpeed = originalMoveSpeed;
 
         if (!isRespawning)
         {
-            StartCoroutine(RespawnAfterDelay());
+            Invoke(nameof(Respawn), respawnDelay);
             isRespawning = true;
         }
     }
 
-    private IEnumerator RespawnAfterDelay()
-    {
-        yield return new WaitForSecondsRealtime(respawnDelay);
-        Respawn();
-    }
-    public void ActivateBoost(float duration)
-    {
-        isBoosted = true;
-        boostTimeRemaining = duration;
-    }
     private void Respawn()
     {
         transform.position = respawnPoint.position;
@@ -125,35 +142,38 @@ public class DiverController : MonoBehaviour
         isRespawning = false;
         spriteRenderer.sprite = neutralSprite;
 
-        AirTimer air = FindAnyObjectByType<AirTimer>();
+        AirTimer air = FindFirstObjectByType<AirTimer>();
         if (air != null)
         {
             air.ResetAir();
         }
 
-        DeathManager deathManager = FindAnyObjectByType<DeathManager>();
+        DeathManager deathManager = FindFirstObjectByType<DeathManager>();
         if (deathManager != null)
         {
             deathManager.ResetDeath();
         }
     }
 
-    private IEnumerator ChangeGravitySmoothly(float targetGravity)
+    // Flask-boost (från flaskor i världen)
+    public void ActivateBoost(float duration)
     {
-        isTransitioningGravity = true;
+        bottleBoostActive = true;
+        boostTimeRemaining = duration;
+    }
 
-        float duration = 0.5f;
-        float startGravity = rb.gravityScale;
-        float timeElapsed = 0f;
+    // Shop: Fenor
+    public void ActivateFinsBoost(float boostSpeed, float duration)
+    {
+        finsBoostActive = true;
+        finsBoostTimeRemaining = duration;
+        moveSpeed = boostSpeed;
+    }
 
-        while (timeElapsed < duration)
-        {
-            rb.gravityScale = Mathf.Lerp(startGravity, targetGravity, timeElapsed / duration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        rb.gravityScale = targetGravity;
-        isTransitioningGravity = false;
+    // Shop: Airtube
+    public void ActivateAirTube(float duration)
+    {
+        airTubeActive = true;
+        airTubeTimeRemaining = duration;
     }
 }
