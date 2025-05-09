@@ -203,7 +203,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -44.07, y: -10.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5548809472000197266}
@@ -224,6 +224,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   distance: 44
+  fleeSpeed: 6
+  fleeDuration: 2
+  detectionRadius: 3
+  threatLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!58 &7794706801556101757
 CircleCollider2D:
   m_ObjectHideFlags: 0
