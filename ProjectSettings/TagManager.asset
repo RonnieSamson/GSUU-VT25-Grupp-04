@@ -54,5 +54,8 @@ TagManager:
   - name: SortingTexture
     uniqueID: 3405308941
     locked: 0
+  - name: Forground
+    uniqueID: 3765882145
+    locked: 0
   m_RenderingLayers:
   - Default
