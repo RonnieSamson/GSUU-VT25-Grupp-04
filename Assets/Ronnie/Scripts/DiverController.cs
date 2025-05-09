@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DiverController : MonoBehaviour
 {
@@ -37,12 +38,31 @@ public class DiverController : MonoBehaviour
 
     private float originalMoveSpeed;
 
+    private Coroutine gravityCoroutine;
+    private bool isTransitioningGravity = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = neutralSprite;
         originalMoveSpeed = moveSpeed;
+    }
+
+    void OnEnable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+
+        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
+        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(0f));
+    }
+
+    void OnDisable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+
+        if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
+        gravityCoroutine = StartCoroutine(ChangeGravitySmoothly(1f));
     }
 
     void Update()
@@ -53,11 +73,11 @@ public class DiverController : MonoBehaviour
             return;
         }
 
+        // Timers
         if (bottleBoostActive)
         {
             boostTimeRemaining -= Time.deltaTime;
-            if (boostTimeRemaining <= 0f)
-                bottleBoostActive = false;
+            if (boostTimeRemaining <= 0f) bottleBoostActive = false;
         }
 
         if (finsBoostActive)
@@ -73,10 +93,10 @@ public class DiverController : MonoBehaviour
         if (airTubeActive)
         {
             airTubeTimeRemaining -= Time.deltaTime;
-            if (airTubeTimeRemaining <= 0f)
-                airTubeActive = false;
+            if (airTubeTimeRemaining <= 0f) airTubeActive = false;
         }
 
+        // Movement
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
 
@@ -112,6 +132,8 @@ public class DiverController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isTransitioningGravity) return;
+
         rb.linearVelocity = moveDirection * moveSpeed;
     }
 
@@ -135,7 +157,7 @@ public class DiverController : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator RespawnCoroutine()
+    private IEnumerator RespawnCoroutine()
     {
         yield return new WaitForSecondsRealtime(respawnDelay);
         Respawn();
@@ -178,5 +200,24 @@ public class DiverController : MonoBehaviour
     {
         airTubeActive = true;
         airTubeTimeRemaining = duration;
+    }
+
+    private IEnumerator ChangeGravitySmoothly(float targetGravity)
+    {
+        isTransitioningGravity = true;
+
+        float duration = 0.5f;
+        float startGravity = rb.gravityScale;
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            rb.gravityScale = Mathf.Lerp(startGravity, targetGravity, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.gravityScale = targetGravity;
+        isTransitioningGravity = false;
     }
 }

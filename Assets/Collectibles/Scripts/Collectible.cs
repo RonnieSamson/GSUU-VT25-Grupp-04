@@ -51,6 +51,9 @@ public class Collectible : MonoBehaviour
     {
         CashManager.Instance.AddCash(cashValue);
 
+        // Lägg till detta
+        FindObjectOfType<CollectibleManager>().AddCollectible();
+
         Destroy(gameObject);
 
         if (holdSlider != null)
@@ -63,6 +66,7 @@ public class Collectible : MonoBehaviour
             instructionText.SetActive(false);
         }
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
