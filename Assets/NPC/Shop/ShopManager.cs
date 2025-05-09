@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class ShopManager : MonoBehaviour
 {
     [SerializeField] private DiverController diverController;
@@ -13,8 +12,6 @@ public class ShopManager : MonoBehaviour
 
     public ShopTrigger shopTrigger;
     public bool shopMenuIsOpen = false;
-
-   
 
     void Start()
     {
@@ -43,9 +40,8 @@ public class ShopManager : MonoBehaviour
         if (!shopTrigger.playerInRange)
         {
             if (shopMenuIsOpen)
-            {
                 CloseShop();
-            }
+
             closeShopText.SetActive(false);
             openShopText.SetActive(false);
         }
@@ -94,23 +90,26 @@ public class ShopManager : MonoBehaviour
             {
                 case "Airtube":
                     Debug.Log("Airtube köpt!");
+                    if (diverController != null)
+                    {
+                        diverController.ActivateAirTube(90f); // Visa sprite + status
+                        AirTimer airTimer = FindFirstObjectByType<AirTimer>();
+                        if (airTimer != null)
+                            airTimer.AddAir(90f); // Ge 90 sekunder luft
+                    }
                     break;
 
                 case "Fins":
-    Debug.Log("Fins bought");
-    if (diverController != null)
-    {
-        diverController.ActivateFinsBoost(40f, 10f); // 10 sekunder, 40 i speed
-    }
-    break;
+                    Debug.Log("Fins bought");
+                    if (diverController != null)
+                        diverController.ActivateFinsBoost(40f, 10f); // 40 i speed, 10 sekunder
+                    break;
 
                 case "FillAir":
                     Debug.Log("Luft fylld!");
-                    AirTimer air = FindAnyObjectByType<AirTimer>();
+                    AirTimer air = FindFirstObjectByType<AirTimer>();
                     if (air != null)
-                    {
-                        air.AddAir(5f); // t.ex. 5 sekunder extra luft
-                    }
+                        air.AddAir(5f);
                     break;
             }
         }
@@ -120,6 +119,3 @@ public class ShopManager : MonoBehaviour
         }
     }
 }
-
-
-

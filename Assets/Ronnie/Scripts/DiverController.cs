@@ -13,6 +13,8 @@ public class DiverController : MonoBehaviour
     [SerializeField] private Sprite bottleBoostSwimmingSprite;
     [SerializeField] private Sprite finsBoostNeutralSprite;
     [SerializeField] private Sprite finsBoostSwimmingSprite;
+    [SerializeField] private Sprite soloTubeNeutralSprite;
+    [SerializeField] private Sprite soloTubeSwimmingSprite;
 
     [Header("Respawn Settings")]
     [SerializeField] private float respawnDelay = 3f;
@@ -27,9 +29,11 @@ public class DiverController : MonoBehaviour
 
     private float boostTimeRemaining = 0f;
     private float finsBoostTimeRemaining = 0f;
+    private float airTubeTimeRemaining = 0f;
 
     private bool bottleBoostActive = false;
     private bool finsBoostActive = false;
+    private bool airTubeActive = false;
 
     private float originalMoveSpeed;
 
@@ -49,17 +53,13 @@ public class DiverController : MonoBehaviour
             return;
         }
 
-        // Hantera bottle boost
         if (bottleBoostActive)
         {
             boostTimeRemaining -= Time.deltaTime;
             if (boostTimeRemaining <= 0f)
-            {
                 bottleBoostActive = false;
-            }
         }
 
-        // Hantera fins boost
         if (finsBoostActive)
         {
             finsBoostTimeRemaining -= Time.deltaTime;
@@ -68,6 +68,13 @@ public class DiverController : MonoBehaviour
                 finsBoostActive = false;
                 moveSpeed = originalMoveSpeed;
             }
+        }
+
+        if (airTubeActive)
+        {
+            airTubeTimeRemaining -= Time.deltaTime;
+            if (airTubeTimeRemaining <= 0f)
+                airTubeActive = false;
         }
 
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -81,6 +88,8 @@ public class DiverController : MonoBehaviour
                 spriteRenderer.sprite = finsBoostSwimmingSprite;
             else if (bottleBoostActive)
                 spriteRenderer.sprite = bottleBoostSwimmingSprite;
+            else if (airTubeActive)
+                spriteRenderer.sprite = soloTubeSwimmingSprite;
             else
                 spriteRenderer.sprite = swimmingSprite;
 
@@ -94,6 +103,8 @@ public class DiverController : MonoBehaviour
                 spriteRenderer.sprite = finsBoostNeutralSprite;
             else if (bottleBoostActive)
                 spriteRenderer.sprite = bottleBoostNeutralSprite;
+            else if (airTubeActive)
+                spriteRenderer.sprite = soloTubeNeutralSprite;
             else
                 spriteRenderer.sprite = neutralSprite;
         }
@@ -114,6 +125,7 @@ public class DiverController : MonoBehaviour
 
         bottleBoostActive = false;
         finsBoostActive = false;
+        airTubeActive = false;
         moveSpeed = originalMoveSpeed;
 
         if (!isRespawning)
@@ -128,7 +140,6 @@ public class DiverController : MonoBehaviour
         transform.position = respawnPoint.position;
         isDead = false;
         isRespawning = false;
-
         spriteRenderer.sprite = neutralSprite;
 
         AirTimer air = FindFirstObjectByType<AirTimer>();
@@ -144,24 +155,25 @@ public class DiverController : MonoBehaviour
         }
     }
 
-    // Flask-boost (för AirBoostBottle)
-    public void ActivateBottleBoost(float duration)
+    // Flask-boost (från flaskor i världen)
+    public void ActivateBoost(float duration)
     {
         bottleBoostActive = true;
         boostTimeRemaining = duration;
     }
 
-    // Legacy-kompatibilitet för gamla flask-script
-    public void ActivateBoost(float duration)
-    {
-        ActivateBottleBoost(duration);
-    }
-
-    // Fenor från shop
+    // Shop: Fenor
     public void ActivateFinsBoost(float boostSpeed, float duration)
     {
         finsBoostActive = true;
         finsBoostTimeRemaining = duration;
         moveSpeed = boostSpeed;
+    }
+
+    // Shop: Airtube
+    public void ActivateAirTube(float duration)
+    {
+        airTubeActive = true;
+        airTubeTimeRemaining = duration;
     }
 }

@@ -4,7 +4,7 @@ using TMPro;
 
 public class AirTimer : MonoBehaviour
 {
-    [SerializeField] private float startTime = 10f;
+    [SerializeField] private float startTime = 30f;
     public float currentTime;
 
     [SerializeField] private Text airTimerText;
@@ -13,10 +13,10 @@ public class AirTimer : MonoBehaviour
     [SerializeField] private Color normalColor = Color.green;
     [SerializeField] private Color warningColor = Color.red;
     [SerializeField] private GameObject gameOverText;
-   
 
     private bool hasDied = false;
     private DeathManager deathManager;
+
     void Start()
     {
         currentTime = startTime;
@@ -62,7 +62,7 @@ public class AirTimer : MonoBehaviour
 
     public void AddAir(float extraTime)
     {
-        currentTime = Mathf.Min(currentTime + extraTime, startTime);
+        currentTime += extraTime;
     }
 
     public void ResetAir()
@@ -75,4 +75,3 @@ public class AirTimer : MonoBehaviour
         airTimerBar.color = normalColor;
     }
 }
-
