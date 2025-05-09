@@ -100,7 +100,7 @@ public class ShopManager : MonoBehaviour
     Debug.Log("Fins bought");
     if (diverController != null)
     {
-        diverController.ActivateFinsBoost(10f, 40f); // 10 sekunder, 40 i speed
+        diverController.ActivateFinsBoost(40f, 10f); // 10 sekunder, 40 i speed
     }
     break;
 

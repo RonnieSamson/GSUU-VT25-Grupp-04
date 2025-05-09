@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class DiverController : MonoBehaviour
@@ -10,8 +9,10 @@ public class DiverController : MonoBehaviour
     [SerializeField] private Sprite swimmingSprite;
 
     [Header("Boost Sprites")]
-    [SerializeField] private Sprite boostNeutralSprite;
-    [SerializeField] private Sprite boostSwimmingSprite;
+    [SerializeField] private Sprite bottleBoostNeutralSprite;
+    [SerializeField] private Sprite bottleBoostSwimmingSprite;
+    [SerializeField] private Sprite finsBoostNeutralSprite;
+    [SerializeField] private Sprite finsBoostSwimmingSprite;
 
     [Header("Respawn Settings")]
     [SerializeField] private float respawnDelay = 3f;
@@ -23,8 +24,13 @@ public class DiverController : MonoBehaviour
 
     public bool isDead = false;
     private bool isRespawning = false;
-    private bool isBoosted = false;
+
     private float boostTimeRemaining = 0f;
+    private float finsBoostTimeRemaining = 0f;
+
+    private bool bottleBoostActive = false;
+    private bool finsBoostActive = false;
+
     private float originalMoveSpeed;
 
     void Start()
@@ -43,14 +49,24 @@ public class DiverController : MonoBehaviour
             return;
         }
 
-        if (isBoosted)
+        // Hantera bottle boost
+        if (bottleBoostActive)
         {
             boostTimeRemaining -= Time.deltaTime;
             if (boostTimeRemaining <= 0f)
             {
-                isBoosted = false;
+                bottleBoostActive = false;
+            }
+        }
+
+        // Hantera fins boost
+        if (finsBoostActive)
+        {
+            finsBoostTimeRemaining -= Time.deltaTime;
+            if (finsBoostTimeRemaining <= 0f)
+            {
+                finsBoostActive = false;
                 moveSpeed = originalMoveSpeed;
-                spriteRenderer.sprite = neutralSprite;
             }
         }
 
@@ -60,15 +76,26 @@ public class DiverController : MonoBehaviour
         if (moveX != 0f || moveY != 0f)
         {
             moveDirection = new Vector2(moveX, moveY).normalized;
-            spriteRenderer.sprite = isBoosted ? boostSwimmingSprite : swimmingSprite;
 
-            if (moveX > 0) spriteRenderer.flipX = true;
-            else if (moveX < 0) spriteRenderer.flipX = false;
+            if (finsBoostActive)
+                spriteRenderer.sprite = finsBoostSwimmingSprite;
+            else if (bottleBoostActive)
+                spriteRenderer.sprite = bottleBoostSwimmingSprite;
+            else
+                spriteRenderer.sprite = swimmingSprite;
+
+            spriteRenderer.flipX = moveX > 0f;
         }
         else
         {
             moveDirection = Vector2.zero;
-            spriteRenderer.sprite = isBoosted ? boostNeutralSprite : neutralSprite;
+
+            if (finsBoostActive)
+                spriteRenderer.sprite = finsBoostNeutralSprite;
+            else if (bottleBoostActive)
+                spriteRenderer.sprite = bottleBoostNeutralSprite;
+            else
+                spriteRenderer.sprite = neutralSprite;
         }
     }
 
@@ -84,7 +111,10 @@ public class DiverController : MonoBehaviour
         isDead = true;
         moveDirection = Vector2.zero;
         rb.linearVelocity = Vector2.zero;
-        isBoosted = false;
+
+        bottleBoostActive = false;
+        finsBoostActive = false;
+        moveSpeed = originalMoveSpeed;
 
         if (!isRespawning)
         {
@@ -114,20 +144,18 @@ public class DiverController : MonoBehaviour
         }
     }
 
-    // Används av flaskan (AirBoostBottle)
-    public void ActivateBoost(float duration)
+    // Flask-boost
+    public void ActivateBottleBoost(float duration)
     {
-        isBoosted = true;
+        bottleBoostActive = true;
         boostTimeRemaining = duration;
     }
 
-    // Används av shoppen (fenor)
+    // Fins från shop
     public void ActivateFinsBoost(float boostSpeed, float duration)
     {
-        isBoosted = true;
-        boostTimeRemaining = duration;
+        finsBoostActive = true;
+        finsBoostTimeRemaining = duration;
         moveSpeed = boostSpeed;
     }
 }
-
-
