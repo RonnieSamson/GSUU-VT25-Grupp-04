@@ -12,15 +12,16 @@ public class SharkBehaviour : MonoBehaviour
 
 
     [Header("Attributes for movement and life")]
-    private float speed = 4f; // slightly slower than the player
+    [SerializeField] private float speed = 4f; // slightly slower than the player
     private float stoppingDistance = 0.2f; // How close we need to get to a patrol point before turning 
     private float life = 10f; // hp of the shark
 
 
     [Header("Attributes for chasing & attacking")]
-    private float damage = 1f; //damage per bite
-    private float attackRange = 1.0f; // Range to start attacking the player
-    private float chaseRange = 20f; // Range to start chasing the player
+    [SerializeField] private float damage = 1f;
+    [SerializeField] private float attackRange = 1.0f;
+    [SerializeField] private float chaseRange = 20f;
+
     private bool isChasingPlayer = false;
 
     private float biteCooldown = 3f;// time before shark can bite again
