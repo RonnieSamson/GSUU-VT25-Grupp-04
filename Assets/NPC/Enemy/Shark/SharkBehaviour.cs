@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Audio;
 
 public class SharkBehaviour : MonoBehaviour
@@ -12,15 +12,15 @@ public class SharkBehaviour : MonoBehaviour
 
 
     [Header("Attributes for movement and life")]
-    public float speed = 3.7f; // slightly slower than the player
-    public float stoppingDistance = 0.2f; // How close we need to get to a patrol point before turning 
+    private float speed = 4f; // slightly slower than the player
+    private float stoppingDistance = 0.2f; // How close we need to get to a patrol point before turning 
     private float life = 10f; // hp of the shark
 
 
     [Header("Attributes for chasing & attacking")]
     private float damage = 1f; //damage per bite
-    public float attackRange = 1.0f; // Range to start attacking the player
-    public float chaseRange = 5.0f; // Range to start chasing the player
+    private float attackRange = 1.0f; // Range to start attacking the player
+    private float chaseRange = 20f; // Range to start chasing the player
     private bool isChasingPlayer = false;
 
     private float biteCooldown = 3f;// time before shark can bite again
@@ -30,6 +30,8 @@ public class SharkBehaviour : MonoBehaviour
 
     public ParticleSystem bubbles;
     public AudioSource bubbleSfx;
+
+    public AudioSource ScreamOuchSfx;
 
     [Header("Attributes for turning \"animation\"")] 
     private bool facingRight = true;
@@ -57,8 +59,19 @@ public class SharkBehaviour : MonoBehaviour
     void Update()
     {
         DistanceToPlayerCheck();
-        
+
+        if (isChasingPlayer)
+        {
+            float directionToPlayer = player.position.x - transform.position.x;
+
+            // Kontrollera om hajen behöver vändas
+            if ((directionToPlayer > 0 && !facingRight) || (directionToPlayer < 0 && facingRight))
+            {
+                Flip();
+            }
+        }
     }
+
 
     void FixedUpdate()
     {
@@ -77,6 +90,7 @@ public class SharkBehaviour : MonoBehaviour
 
         bubbles.Play();
         bubbleSfx.Play();
+        ScreamOuchSfx.Play();
         lastBiteTime = Time.time;
 
         isChasingPlayer = false;
@@ -118,47 +132,40 @@ public class SharkBehaviour : MonoBehaviour
 
     private void Patrol()
     {
-        if (isChasingPlayer) // Needs the player gameobject to work, not tested at all just a placholder
+        if (isChasingPlayer)
         {
             Vector2 direction = (player.position - transform.position).normalized;
             rb.linearVelocity = direction * speed;
         }
-
         else
         {
-            // Patrol between points
+            // Räkna ut riktning till patrullpunkt
             Vector2 direction = (currentPoint.position - transform.position).normalized;
             rb.linearVelocity = direction * speed;
 
-            // Check if close enough to the patrol point
-            if (Vector2.Distance(transform.position, currentPoint.position) < stoppingDistance)
+            // 🔁 Kolla om hajen behöver vändas mot patrullpunkten
+            float directionToPoint = currentPoint.position.x - transform.position.x;
+            if ((directionToPoint > 0 && !facingRight) || (directionToPoint < 0 && facingRight))
             {
-                // Switch to the other patrol point
-                if (currentPoint == patrol1.transform)
-                {
-                    currentPoint = patrol2.transform;
-                }
-                else
-                {
-                    currentPoint = patrol1.transform;
-                }
-
-                // Flip the shark
                 Flip();
             }
 
+            // Byt patrullpunkt om vi är nära
+            if (Vector2.Distance(transform.position, currentPoint.position) < stoppingDistance)
+            {
+                currentPoint = currentPoint == patrol1.transform ? patrol2.transform : patrol1.transform;
+            }
         }
 
+        // Hantering för 3D-vändningseffekt
         if (isTurning)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
 
-            // scaling up and down during turn to simulate 3d movement
             if (shrinking)
             {
                 transform.localScale = Vector3.Lerp(transform.localScale, biggerScale, scaleLerpSpeed * Time.deltaTime);
 
-                // If small enough, start growing back
                 if (Vector3.Distance(transform.localScale, biggerScale) < 0.01f)
                 {
                     shrinking = false;
@@ -168,7 +175,6 @@ public class SharkBehaviour : MonoBehaviour
             {
                 transform.localScale = Vector3.Lerp(transform.localScale, originalScale, scaleLerpSpeed * Time.deltaTime);
 
-                // If back to normal size and finished rotating, stop the turn
                 if (Vector3.Distance(transform.localScale, originalScale) < 0.01f && Quaternion.Angle(transform.rotation, targetRotation) < 1f)
                 {
                     transform.localScale = originalScale;
