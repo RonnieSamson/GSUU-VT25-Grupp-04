@@ -144,14 +144,20 @@ public class DiverController : MonoBehaviour
         }
     }
 
-    // Flask-boost
+    // Flask-boost (för AirBoostBottle)
     public void ActivateBottleBoost(float duration)
     {
         bottleBoostActive = true;
         boostTimeRemaining = duration;
     }
 
-    // Fins från shop
+    // Legacy-kompatibilitet för gamla flask-script
+    public void ActivateBoost(float duration)
+    {
+        ActivateBottleBoost(duration);
+    }
+
+    // Fenor från shop
     public void ActivateFinsBoost(float boostSpeed, float duration)
     {
         finsBoostActive = true;
