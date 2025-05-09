@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2991378503398074218}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.65, y: 0.55, z: 0}
+  m_LocalPosition: {x: -0.15, y: -0.7, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 3756204320363773810}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.6849098, y: -1.0226812, z: 0}
+  m_LocalPosition: {x: -0.14, y: 0.65, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -200,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 4954782043724249089}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.8991623, y: -0.33625317, z: 0}
+  m_LocalPosition: {x: 1.59, y: -0.01, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -289,7 +289,7 @@ Transform:
   m_GameObject: {fileID: 6346306532780308579}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 79.25, y: -16.62, z: 0}
+  m_LocalPosition: {x: 70.16, y: 21.789587, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -312,12 +312,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   distance: 44
-  fleeSpeed: 6
-  fleeDuration: 2
-  detectionRadius: 3
-  threatLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!58 &890544403961563158
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -353,7 +347,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1.0282364
+  m_Radius: 0.0001
 --- !u!50 &4168721348534585693
 Rigidbody2D:
   serializedVersion: 5

@@ -31,6 +31,8 @@ public class SharkBehaviour : MonoBehaviour
     public ParticleSystem bubbles;
     public AudioSource bubbleSfx;
 
+    public AudioSource ScreamOuchSfx;
+
     [Header("Attributes for turning \"animation\"")] 
     private bool facingRight = true;
     private bool isTurning = false;
@@ -77,6 +79,7 @@ public class SharkBehaviour : MonoBehaviour
 
         bubbles.Play();
         bubbleSfx.Play();
+        ScreamOuchSfx.Play();
         lastBiteTime = Time.time;
 
         isChasingPlayer = false;

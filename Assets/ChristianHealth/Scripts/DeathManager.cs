@@ -1,20 +1,23 @@
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
-public class DeathManager : MonoBehaviour   
+public class DeathManager : MonoBehaviour
 {
     [Header("Död och Game Over")]
     [SerializeField] private Sprite deadSprite;
     [SerializeField] private SpriteRenderer diverRenderer;
     [SerializeField] private GameObject gameOverText;
 
-    private bool hasDied = false;
+    [SerializeField] private AudioClip deathSound;
+    private AudioSource audioSource;
+
     private DiverController diver;
+    private bool hasDied = false;
 
     void Start()
     {
-        gameOverText.SetActive(false); 
-        diver = FindObjectOfType<DiverController>();
+        diver = FindAnyObjectByType<DiverController>();
+        audioSource = GetComponent<AudioSource>();
+        gameOverText.SetActive(false);
     }
 
     public void TriggerDeath()
@@ -24,10 +27,28 @@ public class DeathManager : MonoBehaviour
 
         diverRenderer.sprite = deadSprite;
         gameOverText.SetActive(true);
+
         if (diver != null)
         {
             diver.Die();
         }
-        Time.timeScale= 0;
+
+        if (audioSource != null && deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource eller deathSound saknas i DeathManager.");
+        }
+
+        Time.timeScale = 0f; // Pausar spelet – respawn körs ändå tack vare coroutine
+    }
+
+    public void ResetDeath()
+    {
+        hasDied = false;
+        gameOverText.SetActive(false);
+        Time.timeScale = 1f;
     }
 }
