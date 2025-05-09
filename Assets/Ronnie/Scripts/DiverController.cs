@@ -130,9 +130,15 @@ public class DiverController : MonoBehaviour
 
         if (!isRespawning)
         {
-            Invoke(nameof(Respawn), respawnDelay);
+            StartCoroutine(RespawnCoroutine());
             isRespawning = true;
         }
+    }
+
+    private System.Collections.IEnumerator RespawnCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(respawnDelay);
+        Respawn();
     }
 
     private void Respawn()
@@ -155,14 +161,12 @@ public class DiverController : MonoBehaviour
         }
     }
 
-    // Flask-boost (från flaskor i världen)
     public void ActivateBoost(float duration)
     {
         bottleBoostActive = true;
         boostTimeRemaining = duration;
     }
 
-    // Shop: Fenor
     public void ActivateFinsBoost(float boostSpeed, float duration)
     {
         finsBoostActive = true;
@@ -170,7 +174,6 @@ public class DiverController : MonoBehaviour
         moveSpeed = boostSpeed;
     }
 
-    // Shop: Airtube
     public void ActivateAirTube(float duration)
     {
         airTubeActive = true;
