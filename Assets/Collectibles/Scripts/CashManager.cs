@@ -1,12 +1,12 @@
 using UnityEngine;
-using TMPro; 
+using TMPro;
 
 public class CashManager : MonoBehaviour
 {
     public static CashManager Instance;
 
     public int cash = 0;
-    public TMP_Text cashText; 
+    public TMP_Text cashText;
 
     void Awake()
     {
@@ -31,7 +31,18 @@ public class CashManager : MonoBehaviour
         UpdateCashUI();
     }
 
-    void UpdateCashUI()
+    public void SpendCash(int amount)
+    {
+        cash -= amount;
+        UpdateCashUI();
+    }
+
+    public bool HasEnoughCash(int amount)
+    {
+        return cash >= amount;
+    }
+
+    public void UpdateCashUI()
     {
         if (cashText != null)
         {
