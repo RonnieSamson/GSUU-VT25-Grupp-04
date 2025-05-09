@@ -51,7 +51,6 @@ public class Collectible : MonoBehaviour
     {
         CashManager.Instance.AddCash(cashValue);
 
-        // Lägg till detta
         FindObjectOfType<CollectibleManager>().AddCollectible();
 
         Destroy(gameObject);

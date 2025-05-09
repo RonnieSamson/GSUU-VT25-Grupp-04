@@ -10,7 +10,6 @@ public class CollectibleManager : MonoBehaviour
 
     void Start()
     {
-        // Räkna automatiskt antal collectibles i scenen
         totalCollectibles = FindObjectsOfType<Collectible>().Length;
         UpdateCollectibleText();
     }
