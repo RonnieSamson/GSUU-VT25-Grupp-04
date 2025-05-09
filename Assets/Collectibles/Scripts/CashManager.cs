@@ -49,4 +49,10 @@ public class CashManager : MonoBehaviour
             cashText.text = "Cash: $" + cash.ToString();
         }
     }
+    public void ResetCash()
+    {
+        cash = 0;
+        UpdateCashUI();
+    }
+
 }

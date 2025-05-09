@@ -50,4 +50,10 @@ public class PlayerHealth : MonoBehaviour
             }
         }
     }
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateHearts();
+    }
+
 }

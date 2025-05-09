@@ -24,4 +24,10 @@ public class CollectibleManager : MonoBehaviour
     {
         collectibleText.text = $"{collected}/{totalCollectibles}";
     }
+    public void ResetCollectibles()
+    {
+        collected = 0;
+        UpdateCollectibleText();
+    }
+
 }

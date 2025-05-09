@@ -164,24 +164,47 @@ public class DiverController : MonoBehaviour
     }
 
     private void Respawn()
-    {
-        transform.position = respawnPoint.position;
-        isDead = false;
-        isRespawning = false;
-        spriteRenderer.sprite = neutralSprite;
+{
+    transform.position = respawnPoint.position;
+    isDead = false;
+    isRespawning = false;
+    spriteRenderer.sprite = neutralSprite;
 
-        AirTimer air = FindFirstObjectByType<AirTimer>();
-        if (air != null)
-        {
-            air.ResetAir();
-        }
+    bottleBoostActive = false;
+    finsBoostActive = false;
+    airTubeActive = false;
+    moveSpeed = originalMoveSpeed;
 
-        DeathManager deathManager = FindFirstObjectByType<DeathManager>();
-        if (deathManager != null)
-        {
-            deathManager.ResetDeath();
-        }
-    }
+    boostTimeRemaining = 0f;
+    finsBoostTimeRemaining = 0f;
+    airTubeTimeRemaining = 0f;
+
+    //Resetting every component if die
+    AirTimer air = FindFirstObjectByType<AirTimer>();
+    if (air != null)
+        air.ResetAir();
+
+
+    DeathManager deathManager = FindFirstObjectByType<DeathManager>();
+    if (deathManager != null)
+        deathManager.ResetDeath();
+
+
+    PlayerHealth health = GetComponent<PlayerHealth>();
+    if (health != null)
+        health.ResetHealth();
+
+
+    CollectibleManager collectibleManager = FindObjectOfType<CollectibleManager>();
+    if (collectibleManager != null)
+        collectibleManager.ResetCollectibles();
+
+
+    CashManager cashManager = CashManager.Instance;
+    if (cashManager != null)
+        cashManager.ResetCash();
+}
+
 
     public void ActivateBoost(float duration)
     {

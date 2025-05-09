@@ -39,7 +39,7 @@ public class DiverLandController : MonoBehaviour
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        Debug.Log("Grounded: " + isGrounded);
+ 
 
 
         rb.linearVelocity = new Vector2(moveX * walkSpeed, rb.linearVelocity.y); 
